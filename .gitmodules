@@ -1,0 +1,6 @@
+[submodule "deps/tokenize"]
+	path = deps/tokenize
+	url = https://github.com/tsn-lang/tokenize.git
+[submodule "test/Catch2"]
+	path = test/Catch2
+	url = https://github.com/catchorg/Catch2.git
