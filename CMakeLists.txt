@@ -37,6 +37,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 include_directories(
     ${TSN_PARSE_INCLUDE_DIR}
+    ${TSN_TOKENIZE_INCLUDE_DIR}
     ${TSN_UTILS_INCLUDE_DIR}
 )
 
