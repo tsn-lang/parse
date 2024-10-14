@@ -31,7 +31,15 @@ macro(add_sources group dir)
     unset(_all)
 endmacro(add_sources)
 
-add_sources("src"            ".")
+add_sources("src"              ".")
+add_sources("src/misc"         "misc")
+add_sources("src/types"        "types")
+add_sources("src/classes"      "classes")
+add_sources("src/proxies"      "proxies")
+add_sources("src/literals"     "literals")
+add_sources("src/statements"   "statements")
+add_sources("src/expressions"  "expressions")
+add_sources("src/declarations" "declarations")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 

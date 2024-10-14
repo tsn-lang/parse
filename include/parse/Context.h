@@ -14,6 +14,7 @@ namespace tokenize {
 
 namespace parse {
     class Context;
+    class Node;
 
     class Match {
         public:
@@ -60,11 +61,13 @@ namespace parse {
 
             void* allocNode();
             void freeNode(void* node);
+            TokenizedSource* getTokenizedSource() const;
+            ParseState* getState() const;
 
             void begin();
             void commit();
             void rollback();
-            void consume();
+            void consume(Node* forNode = nullptr);
 
             bool atEnd() const;
             const Token* get(i32 offset = 0) const;

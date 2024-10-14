@@ -10,7 +10,9 @@ topLevel = statement
          | (typeDeclaration, ";")
          | typeDefinition
          | (enumDeclaration, ";")
-         | enumDefinition;
+         | enumDefinition
+         | (importStatement, ";")
+         | (exportStatement, ";");
 
 (* classes *)
 propertyAccessorDeclaration = (("get", identifier, "(", ")") | ("set", identifier, "(", typedParameter, ")")), ":", typeSpecifier;
@@ -49,12 +51,12 @@ functionArguments = "(", [expressionSequence], ")";
 
 (* type specifier *)
 typeModifier = ("[", "]") | "*";
-identifierTypeSpecifier = identifier, ["<", typeArgumentList, ">"], [{typeModifier}];
-objectTypeSpecifier = "{", [{ typedAssignable, ";" }], "}", [{typeModifier}];
-arrayTypeSpecifier = "[", [{ typedAssignable, ";" }], "]", [{typeModifier}];
+identifierTypeSpecifier = identifier, ["<", typeArgumentList, ">"];
+objectTypeSpecifier = "{", [{ typedAssignable, ";" }], "}";
+arrayTypeSpecifier = "[", [{ typedAssignable, ";" }], "]";
 functionTypeSpecifier = "(", [typedParameterList], ")", "=>", typeSpecifier;
-parenthesizedTypeSpecifier = "(", typeSpecifier, ")", [{typeModifier}];
-typeSpecifier = identifierTypeSpecifier | objectTypeSpecifier | functionTypeSpecifier | parenthesizedTypeSpecifier;
+parenthesizedTypeSpecifier = "(", typeSpecifier, ")";
+typeSpecifier = (identifierTypeSpecifier | objectTypeSpecifier | arrayTypeSpecifier | functionTypeSpecifier | parenthesizedTypeSpecifier), [{typeModifier}];
 
 (* misc *)
 assignable = identifier;
@@ -71,7 +73,7 @@ binaryOperator = "+"   | "-"  | "*"  | "/"  | "%"  | "&"   | "|"   | "&&"
                | "!="  | "[]";
 prefixUnaryOperator = "++" | "--" | "~" | "!" | "-" | "*";
 postfixUnaryOperator = "++" | "--";
-assignmentOperator = "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "&&=" | "||=" | "^=" | "<<=" | ">>=" | "**=";
+assignmentOperator = "+=" | "-=" | "*=" | "/=" | "%=" | "**=" | "&=" | "|=" | "^=" | "<<=" | ">>=" | "&&=" | "||=";
 
 (* expressions *)
 typeinfoExpression = "typeinfo", "<", typeSpecifier, ">";
@@ -79,18 +81,18 @@ sizeofExpression = "sizeof", "<", typeSpecifier, ">";
 parenthesizedExpression = "(", expression, ")";
 parenthesizedExpressionSequence = "(", expressionSequence, ")";
 expressionSequence = expression, [{ ",", expression }];
-primaryExpression = "this" | "null" | typeinfoExpression | sizeofExpression | literal | identifierTypeSpecifier | parenthesizedExpression | parenthesizedExpressionSequence;
+primaryExpression = "this" | typeinfoExpression | sizeofExpression | literal | identifierTypeSpecifier | parenthesizedExpression | parenthesizedExpressionSequence;
 functionExpression = "function", "(", [parameterList], ")", [":", typeSpecifier], statementBlock;
 arrowFunctionExpression = "(", [parameterList], ")", [":", typeSpecifier], "=>", (expression | statementBlock);
 memberExpressionPart = (".", identifier) | ("[", expression, "]");
 memberExpressionTail = { memberExpressionPart };
 memberExpression = (primaryExpression | functionExpression | arrowFunctionExpression), [memberExpressionTail];
-newExpression = ("new", memberExpression, functionArguments, ["=>", parenthesizedExpression]) | memberExpression;
+newExpression = ("new", typeSpecifier, functionArguments, ["=>", expression]) | memberExpression;
 callExpression = newExpression, [functionArguments, [{ memberExpressionPart | functionArguments }]];
 postfixUnaryExpression = callExpression, [postfixUnaryOperator];
 prefixUnaryExpression = [prefixUnaryExpression], postfixUnaryExpression;
 castExpression = prefixUnaryExpression, [{ "as", typeSpecifier }];
-exponentExpression = castExpression, ["**", expression];
+exponentExpression = castExpression, ["**", expression];    
 multiplicativeExpression = exponentExpression, [("*", "/", "%"), expression];
 additiveExpression = multiplicativeExpression, [("+", "-"), expression];
 bitShiftExpression = additiveExpression, [("<<" | ">>"), expression];
@@ -105,8 +107,7 @@ conditionalExpression = logicalOrExpression, ["?", expression, ":", expression];
 assignmentExpression = conditionalExpression, ["=", expression];
 assignmentOperatorExpression = assignmentExpression, [assignmentOperator, expression];
 awaitExpression = ["await"], assignmentOperatorExpression;
-deleteExpression = ["delete"], awaitExpression;
-expression = deleteExpression;
+expression = awaitExpression;
 
 (* statements *)
 statementBlock = "{", [{ statement }], "}";
@@ -141,6 +142,7 @@ statement = ";"
           | "continue", ";"
           | "return", [expression], ";"
           | "throw", [expression], ";"
+          | "delete", expression, ";"
           | declarationStatement, ";"
           | expressionStatement, ";"
           | ifStatement
@@ -149,8 +151,6 @@ statement = ";"
           | whileLoop
           | doWhileLoop
           | tryCatchStatement
-          | importStatement, ";"
-          | exportStatement, ";"
           | statementBlock;
 
 (* comments *)
@@ -174,7 +174,8 @@ literal = integerLiteral
         | binLiteral
         | booleanLiteral
         | objectLiteral
-        | arrayLiteral;
+        | arrayLiteral
+        | 'null';
 
 (* atoms *)
 letter = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"

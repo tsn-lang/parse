@@ -1,15 +1,16 @@
 @echo off
 
 set /p node_name="Enter node name: "
+set /p dir_name="Enter dir name: "
 
 set header_name="%node_name%.h"
 set src_name="%node_name%.cpp"
 
 set printf="C:\Program Files\Git\usr\bin\printf.exe"
 
-cd "./include/parse"
+cd "./include/parse/%dir_name%"
 %printf% "#pragma once\n" >> %header_name%
-%printf% "#include <parse/Node.h>\n\n" >> %header_name%
+%printf% "#include <parse/misc/Node.h>\n\n" >> %header_name%
 %printf% "namespace parse {\n" >> %header_name%
 %printf% "    class Context;\n\n" >> %header_name%
 %printf% "    class %node_name% : public Node {\n" >> %header_name%
@@ -22,8 +23,8 @@ cd "./include/parse"
 %printf% "    };\n" >> %header_name%
 %printf% "};" >> %header_name%
 
-cd "../../src"
-%printf% "#include <parse/%header_name%>\n" >> %src_name%
+cd "../../../src/%dir_name%"
+%printf% "#include <parse/%dir_name%/%header_name%>\n" >> %src_name%
 %printf% "#include <parse/Context.h>\n\n" >> %src_name%
 %printf% "namespace parse {\n" >> %src_name%
 %printf% "    %node_name%::%node_name%(Context* ctx) : Node(ctx) {}\n" >> %src_name%
@@ -35,5 +36,5 @@ cd "../../src"
 %printf% "    }\n" >> %src_name%
 %printf% "};" >> %src_name%
 
-cd "../"
+cd "../../"
 copy /b CMakeLists.txt +,,

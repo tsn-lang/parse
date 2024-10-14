@@ -1,13 +1,110 @@
 #include <parse/Tokens.h>
+#include <parse/Context.h>
+#include <utils/String.h>
 #include <tokenize/TokenSet.h>
 
 namespace parse {
+    const char* findEndOfTemplateLiteralEmbeddedValue(const char* input) {
+        char strChar = ' ';
+        bool inStr = false;
+        i32 braceCount = 0;
+        
+        while (*input) {
+            if (*input == '\'' || *input == '`') {
+                strChar = *input;
+                inStr = !inStr;
+                input++;
+                continue;
+            }
+
+            if (inStr) {
+                if (*input == '\\') {
+                    if (*(input + 1) == strChar) {
+                        input += 2;
+                        continue;
+                    }
+
+                    if (strChar == '`' && *(input + 1) == '$') {
+                        input += 2;
+                        continue;
+                    }
+                }
+
+                if (strChar == '`' && *input == '$' && *(input + 1) == '{') {
+                    input = findEndOfTemplateLiteralEmbeddedValue(input + 1);
+                    if (!*input) return input;
+                    continue;
+                }
+
+                if (*input == strChar) {
+                    input++;
+                    inStr = false;
+                    continue;
+                }
+
+                input++;
+                continue;
+            }
+
+            if (*input == '{') {
+                braceCount++;
+                input++;
+                continue;
+            }
+
+            if (*input == '}') {
+                braceCount--;
+                if (braceCount == 0) break;
+                continue;
+            }
+
+            input++;
+        }
+
+        return input;
+    }
+
+    MatchResult matchTemplateString(const char* input, MatchedToken* outMatch) {
+        if (*input != '`') return MatchResult::NoMatch;
+        
+        outMatch->type = TokenType::Literal;
+        outMatch->subType = i32(TokenSubType::Literal_TemplateString);
+        outMatch->offset = 0;
+        outMatch->contentBeginOffset = 1;
+        outMatch->contentEndOffset = 1;
+        outMatch->length = 1;
+
+        const char* begin = input;
+        while (*input) {
+            input++;
+            if (*input == '\\') {
+                // ignore '`' and `$` if they're escaped
+                // also make sure '\\`' doesn't escape the '`' (it escapes the '\')
+
+                char nextCh = *(input + 1);
+                if (nextCh == '\\' || nextCh == '`' || nextCh == '$') input++;
+            } else if (*input == '$' && *(input + 1) == '{') {
+                input = findEndOfTemplateLiteralEmbeddedValue(input + 1);
+            } else if (*input == '`') {
+                input++;
+                outMatch->length = input - begin;
+                outMatch->contentEndOffset = outMatch->length - 1;
+                return MatchResult::Matched;
+            }
+        }
+
+        outMatch->length = input - begin;
+        outMatch->contentEndOffset = outMatch->length;
+        return MatchResult::EndNotMatched;
+    }
+
     void setupTokenSet(TokenSet* ts) {
         #define FLOAT_REGEX "-?\\d+(?:(?:(?:\\.\\d*)?(?:[eE][+\\-]?\\d+))|(?:\\.\\d*))"
         #define INT_REGEX "(?:0[xX][0-9a-fA-F]+)|(?:0[bB][01]+)|(?:-?\\d+)"
 
         ts->addStringToken("as",              TokenType::Keyword, i32(TokenSubType::Keyword_As            ));
         ts->addStringToken("async",           TokenType::Keyword, i32(TokenSubType::Keyword_Async         ));
+        ts->addStringToken("await",           TokenType::Keyword, i32(TokenSubType::Keyword_Await         ));
         ts->addStringToken("case",            TokenType::Keyword, i32(TokenSubType::Keyword_Case          ));
         ts->addStringToken("catch",           TokenType::Keyword, i32(TokenSubType::Keyword_Catch         ));
         ts->addStringToken("class",           TokenType::Keyword, i32(TokenSubType::Keyword_Class         ));
@@ -51,6 +148,8 @@ namespace parse {
         ts->addStringToken("]",               TokenType::Symbol,  i32(TokenSubType::Symbol_CloseBracket   ));
         ts->addStringToken(",",               TokenType::Symbol,  i32(TokenSubType::Symbol_Comma          ));
         ts->addStringToken(":",               TokenType::Symbol,  i32(TokenSubType::Symbol_Colon          ));
+        ts->addStringToken(".",               TokenType::Symbol,  i32(TokenSubType::Symbol_Dot            ));
+        ts->addStringToken("=>",              TokenType::Symbol,  i32(TokenSubType::Symbol_Arrow          ));
         ts->addStringToken("+",               TokenType::Symbol,  i32(TokenSubType::Operator_Add          ));
         ts->addStringToken("-",               TokenType::Symbol,  i32(TokenSubType::Operator_Sub          ));
         ts->addStringToken("*",               TokenType::Symbol,  i32(TokenSubType::Operator_Mul          ));
@@ -91,7 +190,7 @@ namespace parse {
         ts->addStringToken("true",            TokenType::Literal, i32(TokenSubType::Literal_True          ));
         ts->addStringToken("false",           TokenType::Literal, i32(TokenSubType::Literal_False         ));
 
-        // todo: custom matcher function to allow for template strings
+        ts->addCustomToken(matchTemplateString);
 
         ts->addRegexToken("([a-zA-Z_]+)\\w*", TokenType::Identifier                                        );
         ts->addRegexToken("'([^'\\]|\\.)*'",  TokenType::Literal, i32(TokenSubType::Literal_String        ));
@@ -105,5 +204,23 @@ namespace parse {
         ts->addRegexToken(INT_REGEX"l?",      TokenType::Literal, i32(TokenSubType::Literal_Int32         ));
         ts->addRegexToken(INT_REGEX"s",       TokenType::Literal, i32(TokenSubType::Literal_Int16         ));
         ts->addRegexToken(INT_REGEX"b",       TokenType::Literal, i32(TokenSubType::Literal_Int8          ));
+    }
+
+    u32 parseEscapeSequence(const char* sequence, String& out, Context* ctx) {
+        switch (*sequence) {
+            case 'n' : { out += '\n'; return 1; }
+            case 't' : { out += '\t'; return 1; }
+            case 'r' : { out += '\r'; return 1; }
+            case 'a' : { out += '\a'; return 1; }
+            case 'b' : { out += '\b'; return 1; }
+            case '`' : { out += '`' ; return 1; }
+            case '$' : { out += '$' ; return 1; }
+            case '"' : { out += '\"'; return 1; }
+            case '\'': { out += '\''; return 1; }
+            case '\\': { out += '\\'; return 1; }
+        }
+
+        ctx->logWarn("Invalid escape sequence '\\%c'", *sequence);
+        return 0;
     }
 };
