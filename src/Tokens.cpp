@@ -99,8 +99,11 @@ namespace parse {
     }
 
     void setupTokenSet(TokenSet* ts) {
-        #define FLOAT_REGEX "-?\\d+(?:(?:(?:\\.\\d*)?(?:[eE][+\\-]?\\d+))|(?:\\.\\d*))"
+        // negative sign will be parsed separately
+        #define FLOAT_REGEX "\\d+(?:(?:(?:\\.\\d*)?(?:[eE][+\\-]?\\d+))|(?:\\.\\d*))"
         #define INT_REGEX "(?:0[xX][0-9a-fA-F]+)|(?:0[bB][01]+)|(?:-?\\d+)"
+        #define IDENTIFIER_REGEX "([a-zA-Z_]+)\\w*"
+        #define STRING_REGEX "'(?:[^'\\\\]|\\\\.)*'"
 
         ts->addStringToken("as",              TokenType::Keyword, i32(TokenSubType::Keyword_As            ));
         ts->addStringToken("async",           TokenType::Keyword, i32(TokenSubType::Keyword_Async         ));
@@ -192,8 +195,8 @@ namespace parse {
 
         ts->addCustomToken(matchTemplateString);
 
-        ts->addRegexToken("([a-zA-Z_]+)\\w*", TokenType::Identifier                                        );
-        ts->addRegexToken("'([^'\\]|\\.)*'",  TokenType::Literal, i32(TokenSubType::Literal_String        ));
+        ts->addRegexToken(IDENTIFIER_REGEX,   TokenType::Identifier                                        );
+        ts->addRegexToken(STRING_REGEX,       TokenType::Literal, i32(TokenSubType::Literal_String        ));
         ts->addRegexToken(FLOAT_REGEX"f",     TokenType::Literal, i32(TokenSubType::Literal_Float32       ));
         ts->addRegexToken(FLOAT_REGEX"d?",    TokenType::Literal, i32(TokenSubType::Literal_Float64       ));
         ts->addRegexToken(INT_REGEX"ull",     TokenType::Literal, i32(TokenSubType::Literal_UInt64        ));
@@ -201,9 +204,9 @@ namespace parse {
         ts->addRegexToken(INT_REGEX"us",      TokenType::Literal, i32(TokenSubType::Literal_UInt16        ));
         ts->addRegexToken(INT_REGEX"ub",      TokenType::Literal, i32(TokenSubType::Literal_UInt8         ));
         ts->addRegexToken(INT_REGEX"ll",      TokenType::Literal, i32(TokenSubType::Literal_Int64         ));
-        ts->addRegexToken(INT_REGEX"l?",      TokenType::Literal, i32(TokenSubType::Literal_Int32         ));
         ts->addRegexToken(INT_REGEX"s",       TokenType::Literal, i32(TokenSubType::Literal_Int16         ));
         ts->addRegexToken(INT_REGEX"b",       TokenType::Literal, i32(TokenSubType::Literal_Int8          ));
+        ts->addRegexToken(INT_REGEX"l?",      TokenType::Literal, i32(TokenSubType::Literal_Int32         ));
     }
 
     u32 parseEscapeSequence(const char* sequence, String& out, Context* ctx) {
