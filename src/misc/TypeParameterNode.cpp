@@ -4,6 +4,7 @@
 
 namespace parse {
     TypeParameterNode::TypeParameterNode(Context* ctx) : Node(ctx, NodeType::TypeParameterNode) {}
+    TypeParameterNode::~TypeParameterNode() {}
     void TypeParameterNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     TypeParameterNode* TypeParameterNode::Create(Context* ctx) { return new (ctx->allocNode()) TypeParameterNode(ctx); }
 

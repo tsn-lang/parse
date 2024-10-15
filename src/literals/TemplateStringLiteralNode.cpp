@@ -7,6 +7,7 @@
 #include <tokenize/TokenizedSource.h>
 #include <tokenize/Token.h>
 #include <tokenize/SourceException.h>
+#include <utils/Array.hpp>
 
 namespace parse {
     TemplateStringLiteralNode::TemplateStringLiteralNode(Context* ctx) : Node(ctx, NodeType::TemplateStringLiteralNode) {}

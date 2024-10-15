@@ -4,6 +4,7 @@
 #include <parse/proxies/ExpressionNode.h>
 #include <parse/Context.h>
 #include <tokenize/Token.h>
+#include <utils/Array.hpp>
 
 namespace parse {
     DeclarationStatementNode::DeclarationStatementNode(Context* ctx)

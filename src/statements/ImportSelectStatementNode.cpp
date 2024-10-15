@@ -5,6 +5,7 @@
 
 namespace parse {
     ImportSelectStatementNode::ImportSelectStatementNode(Context* ctx) : Node(ctx, NodeType::ImportSelectStatementNode) {}
+    ImportSelectStatementNode::~ImportSelectStatementNode() {}
     void ImportSelectStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ImportSelectStatementNode* ImportSelectStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) ImportSelectStatementNode(ctx); }
 

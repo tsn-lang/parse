@@ -1,6 +1,7 @@
 #include <parse/misc/TypeParameterListNode.h>
 #include <parse/misc/TypeParameterNode.h>
 #include <parse/Context.h>
+#include <utils/Array.hpp>
 
 namespace parse {
     TypeParameterListNode::TypeParameterListNode(Context* ctx) : Node(ctx, NodeType::TypeParameterListNode) {}
