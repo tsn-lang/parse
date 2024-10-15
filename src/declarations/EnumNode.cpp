@@ -5,7 +5,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    EnumNode::EnumNode(Context* ctx) : Node(ctx) {}
+    EnumNode::EnumNode(Context* ctx) : Node(ctx, NodeType::EnumNode) {}
     EnumNode::~EnumNode() {}
     void EnumNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     EnumNode* EnumNode::Create(Context* ctx) { return new (ctx->allocNode()) EnumNode(ctx); }

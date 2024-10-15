@@ -2,7 +2,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    ThisExpressionNode::ThisExpressionNode(Context* ctx) : Node(ctx) {}
+    ThisExpressionNode::ThisExpressionNode(Context* ctx) : Node(ctx, NodeType::ThisExpressionNode) {}
     void ThisExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ThisExpressionNode* ThisExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) ThisExpressionNode(ctx); }
 

@@ -4,7 +4,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    CastExpressionNode::CastExpressionNode(Context* ctx) : Node(ctx), expr(nullptr), asType(nullptr) {}
+    CastExpressionNode::CastExpressionNode(Context* ctx) : Node(ctx, NodeType::CastExpressionNode), expr(nullptr), asType(nullptr) {}
     void CastExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     CastExpressionNode* CastExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) CastExpressionNode(ctx); }
 

@@ -9,7 +9,7 @@
 
 namespace parse {
     ClassMethodNode::ClassMethodNode(Context* ctx)
-        : Node(ctx), isPublic(true), isStatic(false), isAsync(false), returnType(nullptr), body(nullptr),
+        : Node(ctx, NodeType::ClassMethodNode), isPublic(true), isStatic(false), isAsync(false), returnType(nullptr), body(nullptr),
         typeParameters(nullptr)
     {}
     ClassMethodNode::~ClassMethodNode() {}

@@ -4,7 +4,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    ClassPropertyNode::ClassPropertyNode(Context* ctx) : Node(ctx), isPublic(true), isStatic(false), type(nullptr) {}
+    ClassPropertyNode::ClassPropertyNode(Context* ctx) : Node(ctx, NodeType::ClassPropertyNode), isPublic(true), isStatic(false), type(nullptr) {}
     ClassPropertyNode::~ClassPropertyNode() {}
     void ClassPropertyNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ClassPropertyNode* ClassPropertyNode::Create(Context* ctx) { return new (ctx->allocNode()) ClassPropertyNode(ctx); }

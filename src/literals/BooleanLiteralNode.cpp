@@ -3,7 +3,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    BooleanLiteralNode::BooleanLiteralNode(Context* ctx) : Node(ctx), value(false) {}
+    BooleanLiteralNode::BooleanLiteralNode(Context* ctx) : Node(ctx, NodeType::BooleanLiteralNode), value(false) {}
     void BooleanLiteralNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     BooleanLiteralNode* BooleanLiteralNode::Create(Context* ctx) { return new (ctx->allocNode()) BooleanLiteralNode(ctx); }
 

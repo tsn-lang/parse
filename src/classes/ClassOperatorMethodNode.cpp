@@ -9,7 +9,7 @@
 
 namespace parse {
     ClassOperatorMethodNode::ClassOperatorMethodNode(Context* ctx)
-        : Node(ctx), isAsync(false), isPublic(true), isStatic(false), operation(OperatorType::Invalid),
+        : Node(ctx, NodeType::ClassOperatorMethodNode), isAsync(false), isPublic(true), isStatic(false), operation(OperatorType::Invalid),
         returnType(nullptr), body(nullptr), typeParameters(nullptr)
     {}
     ClassOperatorMethodNode::~ClassOperatorMethodNode() {}

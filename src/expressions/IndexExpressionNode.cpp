@@ -6,7 +6,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    IndexExpressionNode::IndexExpressionNode(Context* ctx) : Node(ctx), object(nullptr), index(nullptr) {}
+    IndexExpressionNode::IndexExpressionNode(Context* ctx) : Node(ctx, NodeType::IndexExpressionNode), object(nullptr), index(nullptr) {}
     void IndexExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     IndexExpressionNode* IndexExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) IndexExpressionNode(ctx); }
 

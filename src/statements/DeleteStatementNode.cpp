@@ -3,7 +3,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    DeleteStatementNode::DeleteStatementNode(Context* ctx) : Node(ctx) {}
+    DeleteStatementNode::DeleteStatementNode(Context* ctx) : Node(ctx, NodeType::DeleteStatementNode) {}
     void DeleteStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     DeleteStatementNode* DeleteStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) DeleteStatementNode(ctx); }
 

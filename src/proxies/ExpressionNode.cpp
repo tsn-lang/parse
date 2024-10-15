@@ -14,7 +14,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    ExpressionNode::ExpressionNode(Context* ctx) : Node(ctx), expr(nullptr) {}
+    ExpressionNode::ExpressionNode(Context* ctx) : Node(ctx, NodeType::ExpressionNode), expr(nullptr) {}
     void ExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ExpressionNode* ExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) ExpressionNode(ctx); }
 

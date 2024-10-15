@@ -5,7 +5,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    TryCatchStatementNode::TryCatchStatementNode(Context* ctx) : Node(ctx), tryBody(nullptr) {}
+    TryCatchStatementNode::TryCatchStatementNode(Context* ctx) : Node(ctx, NodeType::TryCatchStatementNode), tryBody(nullptr) {}
     TryCatchStatementNode::~TryCatchStatementNode() {}
     void TryCatchStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     TryCatchStatementNode* TryCatchStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) TryCatchStatementNode(ctx); }

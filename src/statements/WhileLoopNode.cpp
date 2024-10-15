@@ -4,7 +4,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    WhileLoopNode::WhileLoopNode(Context* ctx) : Node(ctx), body(nullptr), condition(nullptr) {}
+    WhileLoopNode::WhileLoopNode(Context* ctx) : Node(ctx, NodeType::WhileLoopNode), body(nullptr), condition(nullptr) {}
     void WhileLoopNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     WhileLoopNode* WhileLoopNode::Create(Context* ctx) { return new (ctx->allocNode()) WhileLoopNode(ctx); }
 

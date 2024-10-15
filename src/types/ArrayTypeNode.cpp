@@ -4,7 +4,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    ArrayTypeNode::ArrayTypeNode(Context* ctx) : Node(ctx) {}
+    ArrayTypeNode::ArrayTypeNode(Context* ctx) : Node(ctx, NodeType::ArrayTypeNode) {}
     ArrayTypeNode::~ArrayTypeNode() {}
     void ArrayTypeNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ArrayTypeNode* ArrayTypeNode::Create(Context* ctx) { return new (ctx->allocNode()) ArrayTypeNode(ctx); }

@@ -4,7 +4,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    ExpressionSequenceNode::ExpressionSequenceNode(Context* ctx) : Node(ctx) {}
+    ExpressionSequenceNode::ExpressionSequenceNode(Context* ctx) : Node(ctx, NodeType::ExpressionSequenceNode) {}
     ExpressionSequenceNode::~ExpressionSequenceNode() {}
     void ExpressionSequenceNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ExpressionSequenceNode* ExpressionSequenceNode::Create(Context* ctx) { return new (ctx->allocNode()) ExpressionSequenceNode(ctx); }

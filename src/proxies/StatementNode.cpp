@@ -21,7 +21,7 @@
 #include <parse/proxies/ExpressionNode.h>
 
 namespace parse {
-    StatementNode::StatementNode(Context* ctx) : Node(ctx), stmt(nullptr) {}
+    StatementNode::StatementNode(Context* ctx) : Node(ctx, NodeType::StatementNode), stmt(nullptr) {}
     void StatementNode::acceptVisitor(INodeVisitor* visitor) {
         if (stmt) stmt->acceptVisitor(visitor);
     

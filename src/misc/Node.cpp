@@ -3,7 +3,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    Node::Node(Context* ctx) : m_ctx(ctx), m_isError(false) {
+    Node::Node(Context* ctx, NodeType type) : m_ctx(ctx), m_isError(false), m_type(type) {
         const Token* curTok = ctx->get();
         if (curTok) {
             m_location.resourceId = curTok->location.resourceId;
@@ -16,8 +16,15 @@ namespace parse {
         }
     }
 
+    Node::~Node() {
+    }
+
     void Node::destroy() {
         m_ctx->freeNode(this);
+    }
+
+    NodeType Node::getType() const {
+        return m_type;
     }
 
     Context* Node::getContext() const {

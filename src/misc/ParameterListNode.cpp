@@ -3,7 +3,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    ParameterListNode::ParameterListNode(Context* ctx) : Node(ctx) {}
+    ParameterListNode::ParameterListNode(Context* ctx) : Node(ctx, NodeType::ParameterListNode) {}
     ParameterListNode::~ParameterListNode() {}
     void ParameterListNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ParameterListNode* ParameterListNode::Create(Context* ctx) { return new (ctx->allocNode()) ParameterListNode(ctx); }

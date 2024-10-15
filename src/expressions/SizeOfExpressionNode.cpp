@@ -3,7 +3,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    SizeOfExpressionNode::SizeOfExpressionNode(Context* ctx) : Node(ctx), type(nullptr) {}
+    SizeOfExpressionNode::SizeOfExpressionNode(Context* ctx) : Node(ctx, NodeType::SizeOfExpressionNode), type(nullptr) {}
     void SizeOfExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     SizeOfExpressionNode* SizeOfExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) SizeOfExpressionNode(ctx); }
 

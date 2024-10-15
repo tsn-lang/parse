@@ -8,7 +8,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    FunctionNode::FunctionNode(Context* ctx) : Node(ctx), isAsync(false), body(nullptr), typeParameters(nullptr) {}
+    FunctionNode::FunctionNode(Context* ctx) : Node(ctx, NodeType::FunctionNode), isAsync(false), body(nullptr), typeParameters(nullptr) {}
     FunctionNode::~FunctionNode() {}
     void FunctionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     FunctionNode* FunctionNode::Create(Context* ctx) { return new (ctx->allocNode()) FunctionNode(ctx); }

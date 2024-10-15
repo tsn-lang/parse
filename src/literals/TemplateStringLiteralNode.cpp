@@ -9,7 +9,7 @@
 #include <tokenize/SourceException.h>
 
 namespace parse {
-    TemplateStringLiteralNode::TemplateStringLiteralNode(Context* ctx) : Node(ctx) {}
+    TemplateStringLiteralNode::TemplateStringLiteralNode(Context* ctx) : Node(ctx, NodeType::TemplateStringLiteralNode) {}
     TemplateStringLiteralNode::~TemplateStringLiteralNode() {}
     void TemplateStringLiteralNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     TemplateStringLiteralNode* TemplateStringLiteralNode::Create(Context* ctx) { return new (ctx->allocNode()) TemplateStringLiteralNode(ctx); }

@@ -5,7 +5,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    IdentifierTypeSpecifierNode::IdentifierTypeSpecifierNode(Context* ctx) : Node(ctx) {}
+    IdentifierTypeSpecifierNode::IdentifierTypeSpecifierNode(Context* ctx) : Node(ctx, NodeType::IdentifierTypeSpecifierNode) {}
     IdentifierTypeSpecifierNode::~IdentifierTypeSpecifierNode() {}
     void IdentifierTypeSpecifierNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     IdentifierTypeSpecifierNode* IdentifierTypeSpecifierNode::Create(Context* ctx) { return new (ctx->allocNode()) IdentifierTypeSpecifierNode(ctx); }

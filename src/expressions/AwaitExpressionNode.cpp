@@ -3,7 +3,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    AwaitExpressionNode::AwaitExpressionNode(Context* ctx) : Node(ctx), expr(nullptr) {}
+    AwaitExpressionNode::AwaitExpressionNode(Context* ctx) : Node(ctx, NodeType::AwaitExpressionNode), expr(nullptr) {}
     void AwaitExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     AwaitExpressionNode* AwaitExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) AwaitExpressionNode(ctx); }
 

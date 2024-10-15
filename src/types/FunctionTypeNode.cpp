@@ -4,7 +4,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    FunctionTypeNode::FunctionTypeNode(Context* ctx) : Node(ctx), returnType(nullptr) {}
+    FunctionTypeNode::FunctionTypeNode(Context* ctx) : Node(ctx, NodeType::FunctionTypeNode), returnType(nullptr) {}
     FunctionTypeNode::~FunctionTypeNode() {}
     void FunctionTypeNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     FunctionTypeNode* FunctionTypeNode::Create(Context* ctx) { return new (ctx->allocNode()) FunctionTypeNode(ctx); }

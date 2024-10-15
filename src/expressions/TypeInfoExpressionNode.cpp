@@ -3,7 +3,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    TypeInfoExpressionNode::TypeInfoExpressionNode(Context* ctx) : Node(ctx), type(nullptr) {}
+    TypeInfoExpressionNode::TypeInfoExpressionNode(Context* ctx) : Node(ctx, NodeType::TypeInfoExpressionNode), type(nullptr) {}
     void TypeInfoExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     TypeInfoExpressionNode* TypeInfoExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) TypeInfoExpressionNode(ctx); }
 

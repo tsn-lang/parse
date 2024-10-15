@@ -6,7 +6,7 @@
 
 namespace parse {
     ForLoopNode::ForLoopNode(Context* ctx)
-        : Node(ctx), initializer(nullptr), condition(nullptr), modifier(nullptr), body(nullptr)
+        : Node(ctx, NodeType::ForLoopNode), initializer(nullptr), condition(nullptr), modifier(nullptr), body(nullptr)
     {}
     void ForLoopNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ForLoopNode* ForLoopNode::Create(Context* ctx) { return new (ctx->allocNode()) ForLoopNode(ctx); }

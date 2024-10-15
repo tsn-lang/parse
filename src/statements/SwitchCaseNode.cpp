@@ -5,7 +5,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    SwitchCaseNode::SwitchCaseNode(Context* ctx) : Node(ctx), value(nullptr), body(nullptr) {}
+    SwitchCaseNode::SwitchCaseNode(Context* ctx) : Node(ctx, NodeType::SwitchCaseNode), value(nullptr), body(nullptr) {}
     void SwitchCaseNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     SwitchCaseNode* SwitchCaseNode::Create(Context* ctx) { return new (ctx->allocNode()) SwitchCaseNode(ctx); }
 

@@ -4,7 +4,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    CatchStatementNode::CatchStatementNode(Context* ctx) : Node(ctx), exception(nullptr), body(nullptr) {}
+    CatchStatementNode::CatchStatementNode(Context* ctx) : Node(ctx, NodeType::CatchStatementNode), exception(nullptr), body(nullptr) {}
     void CatchStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     CatchStatementNode* CatchStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) CatchStatementNode(ctx); }
 

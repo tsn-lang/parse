@@ -3,7 +3,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    StringLiteralNode::StringLiteralNode(Context* ctx) : Node(ctx) {}
+    StringLiteralNode::StringLiteralNode(Context* ctx) : Node(ctx, NodeType::StringLiteralNode) {}
     StringLiteralNode::~StringLiteralNode() {}
     void StringLiteralNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     StringLiteralNode* StringLiteralNode::Create(Context* ctx) { return new (ctx->allocNode()) StringLiteralNode(ctx); }

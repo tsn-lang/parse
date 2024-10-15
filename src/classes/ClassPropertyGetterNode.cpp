@@ -8,7 +8,7 @@
 
 namespace parse {
     ClassPropertyGetterNode::ClassPropertyGetterNode(Context* ctx)
-        : Node(ctx), isAsync(false), isStatic(false), isPublic(true), returnType(nullptr), body(nullptr)
+        : Node(ctx, NodeType::ClassPropertyGetterNode), isAsync(false), isStatic(false), isPublic(true), returnType(nullptr), body(nullptr)
     {}
     ClassPropertyGetterNode::~ClassPropertyGetterNode() {}
     void ClassPropertyGetterNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }

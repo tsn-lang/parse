@@ -6,7 +6,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    TypeSpecifierNode::TypeSpecifierNode(Context* ctx) : Node(ctx), type(nullptr), mod(Modifier::None) {}
+    TypeSpecifierNode::TypeSpecifierNode(Context* ctx) : Node(ctx, NodeType::TypeSpecifierNode), type(nullptr), mod(Modifier::None) {}
     void TypeSpecifierNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     TypeSpecifierNode* TypeSpecifierNode::Create(Context* ctx) { return new (ctx->allocNode()) TypeSpecifierNode(ctx); }
 

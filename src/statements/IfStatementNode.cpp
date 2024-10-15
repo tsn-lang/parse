@@ -4,7 +4,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    IfStatementNode::IfStatementNode(Context* ctx) : Node(ctx), condition(nullptr), body(nullptr), elseBody(nullptr) {}
+    IfStatementNode::IfStatementNode(Context* ctx) : Node(ctx, NodeType::IfStatementNode), condition(nullptr), body(nullptr), elseBody(nullptr) {}
     void IfStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     IfStatementNode* IfStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) IfStatementNode(ctx); }
 

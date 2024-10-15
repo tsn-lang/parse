@@ -13,7 +13,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    ClassNode::ClassNode(Context* ctx) : Node(ctx), dtor(nullptr), typeParameters(nullptr) {}
+    ClassNode::ClassNode(Context* ctx) : Node(ctx, NodeType::ClassNode), dtor(nullptr), typeParameters(nullptr) {}
     ClassNode::~ClassNode() {}
     void ClassNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ClassNode* ClassNode::Create(Context* ctx) { return new (ctx->allocNode()) ClassNode(ctx); }

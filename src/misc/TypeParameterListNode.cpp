@@ -3,7 +3,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    TypeParameterListNode::TypeParameterListNode(Context* ctx) : Node(ctx) {}
+    TypeParameterListNode::TypeParameterListNode(Context* ctx) : Node(ctx, NodeType::TypeParameterListNode) {}
     TypeParameterListNode::~TypeParameterListNode() {}
     void TypeParameterListNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     TypeParameterListNode* TypeParameterListNode::Create(Context* ctx) { return new (ctx->allocNode()) TypeParameterListNode(ctx); }

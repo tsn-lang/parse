@@ -7,7 +7,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    MemberExpressionNode::MemberExpressionNode(Context* ctx) : Node(ctx), object(nullptr) {}
+    MemberExpressionNode::MemberExpressionNode(Context* ctx) : Node(ctx, NodeType::MemberExpressionNode), object(nullptr) {}
     MemberExpressionNode::~MemberExpressionNode() {}
     void MemberExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     MemberExpressionNode* MemberExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) MemberExpressionNode(ctx); }

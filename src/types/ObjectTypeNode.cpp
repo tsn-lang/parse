@@ -5,7 +5,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    ObjectTypeNode::ObjectTypeNode(Context* ctx) : Node(ctx) {}
+    ObjectTypeNode::ObjectTypeNode(Context* ctx) : Node(ctx, NodeType::ObjectTypeNode) {}
     ObjectTypeNode::~ObjectTypeNode() {}
     void ObjectTypeNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ObjectTypeNode* ObjectTypeNode::Create(Context* ctx) { return new (ctx->allocNode()) ObjectTypeNode(ctx); }

@@ -4,7 +4,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    ImportSelectStatementNode::ImportSelectStatementNode(Context* ctx) : Node(ctx) {}
+    ImportSelectStatementNode::ImportSelectStatementNode(Context* ctx) : Node(ctx, NodeType::ImportSelectStatementNode) {}
     void ImportSelectStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ImportSelectStatementNode* ImportSelectStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) ImportSelectStatementNode(ctx); }
 

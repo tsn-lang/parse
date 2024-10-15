@@ -9,7 +9,7 @@
 
 namespace parse {
     ClassPropertySetterNode::ClassPropertySetterNode(Context* ctx)
-        : Node(ctx), isAsync(false), isStatic(false), isPublic(true), returnType(nullptr), body(nullptr),
+        : Node(ctx, NodeType::ClassPropertySetterNode), isAsync(false), isStatic(false), isPublic(true), returnType(nullptr), body(nullptr),
         typeParameters(nullptr)
     {}
     ClassPropertySetterNode::~ClassPropertySetterNode() {}

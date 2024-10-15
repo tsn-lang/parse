@@ -3,7 +3,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    TypeParameterNode::TypeParameterNode(Context* ctx) : Node(ctx) {}
+    TypeParameterNode::TypeParameterNode(Context* ctx) : Node(ctx, NodeType::TypeParameterNode) {}
     void TypeParameterNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     TypeParameterNode* TypeParameterNode::Create(Context* ctx) { return new (ctx->allocNode()) TypeParameterNode(ctx); }
 

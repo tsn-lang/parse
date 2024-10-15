@@ -4,7 +4,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    UnaryExpressionNode::UnaryExpressionNode(Context* ctx) : Node(ctx), expr(nullptr), operation(OperatorType::Invalid) {}
+    UnaryExpressionNode::UnaryExpressionNode(Context* ctx) : Node(ctx, NodeType::UnaryExpressionNode), expr(nullptr), operation(OperatorType::Invalid) {}
     void UnaryExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     UnaryExpressionNode* UnaryExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) UnaryExpressionNode(ctx); }
 

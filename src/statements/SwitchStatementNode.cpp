@@ -5,7 +5,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    SwitchStatementNode::SwitchStatementNode(Context* ctx) : Node(ctx), value(nullptr) {}
+    SwitchStatementNode::SwitchStatementNode(Context* ctx) : Node(ctx, NodeType::SwitchStatementNode), value(nullptr) {}
     SwitchStatementNode::~SwitchStatementNode() {}
     void SwitchStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     SwitchStatementNode* SwitchStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) SwitchStatementNode(ctx); }

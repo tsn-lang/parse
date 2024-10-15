@@ -7,7 +7,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    ExportStatementNode::ExportStatementNode(Context* ctx) : Node(ctx), exportable(nullptr) {}
+    ExportStatementNode::ExportStatementNode(Context* ctx) : Node(ctx, NodeType::ExportStatementNode), exportable(nullptr) {}
     void ExportStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ExportStatementNode* ExportStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) ExportStatementNode(ctx); }
 

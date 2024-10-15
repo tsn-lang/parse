@@ -6,7 +6,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    NewExpressionNode::NewExpressionNode(Context* ctx) : Node(ctx), type(nullptr), arguments(nullptr), destination(nullptr) {}
+    NewExpressionNode::NewExpressionNode(Context* ctx) : Node(ctx, NodeType::NewExpressionNode), type(nullptr), arguments(nullptr), destination(nullptr) {}
     void NewExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     NewExpressionNode* NewExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) NewExpressionNode(ctx); }
 

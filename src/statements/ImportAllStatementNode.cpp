@@ -3,7 +3,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    ImportAllStatementNode::ImportAllStatementNode(Context* ctx) : Node(ctx) {}
+    ImportAllStatementNode::ImportAllStatementNode(Context* ctx) : Node(ctx, NodeType::ImportAllStatementNode) {}
     ImportAllStatementNode::~ImportAllStatementNode() {}
     void ImportAllStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ImportAllStatementNode* ImportAllStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) ImportAllStatementNode(ctx); }

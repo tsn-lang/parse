@@ -10,7 +10,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    TopLevelNode::TopLevelNode(Context* ctx) : Node(ctx) {
+    TopLevelNode::TopLevelNode(Context* ctx) : Node(ctx, NodeType::TopLevelNode) {
         statement = nullptr;
     }
 

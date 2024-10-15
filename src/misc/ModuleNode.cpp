@@ -4,7 +4,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    ModuleNode::ModuleNode(Context* ctx) : Node(ctx) {}
+    ModuleNode::ModuleNode(Context* ctx) : Node(ctx, NodeType::ModuleNode) {}
     ModuleNode::~ModuleNode() {}
     void ModuleNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ModuleNode* ModuleNode::Create(Context* ctx) { return new (ctx->allocNode()) ModuleNode(ctx); }

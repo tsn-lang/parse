@@ -7,7 +7,7 @@
 
 namespace parse {
     ArrowFunctionExpressionNode::ArrowFunctionExpressionNode(Context* ctx)
-        : Node(ctx), parameters(nullptr), body(nullptr), returnType(nullptr)
+        : Node(ctx, NodeType::ArrowFunctionExpressionNode), parameters(nullptr), body(nullptr), returnType(nullptr)
     {}
     void ArrowFunctionExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ArrowFunctionExpressionNode* ArrowFunctionExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) ArrowFunctionExpressionNode(ctx); }

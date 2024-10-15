@@ -3,7 +3,7 @@
 #include <parse/Context.h>
 
 namespace parse {
-    ThrowStatementNode::ThrowStatementNode(Context* ctx) : Node(ctx), value(nullptr) {}
+    ThrowStatementNode::ThrowStatementNode(Context* ctx) : Node(ctx, NodeType::ThrowStatementNode), value(nullptr) {}
     void ThrowStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ThrowStatementNode* ThrowStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) ThrowStatementNode(ctx); }
 

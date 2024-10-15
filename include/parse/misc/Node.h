@@ -36,7 +36,6 @@ namespace parse {
     class ExportStatementNode;
     class ExpressionNode;
     class ExpressionSequenceNode;
-    class ExpressionSequenceNode;
     class ExpressionStatementNode;
     class ForLoopNode;
     class FunctionExpressionNode;
@@ -57,7 +56,6 @@ namespace parse {
     class ParameterListNode;
     class ReturnStatementNode;
     class SizeOfExpressionNode;
-    class StatementBlockNode;
     class StatementBlockNode;
     class StatementNode;
     class StringLiteralNode;
@@ -149,11 +147,12 @@ namespace parse {
 
     class Node {
         public:
-            Node(Context* ctx);
+            Node(Context* ctx, NodeType type);
             virtual ~Node();
 
             void destroy();
 
+            NodeType getType() const;
             Context* getContext() const;
             const SourceLocation& getLocation() const;
             void extendLocation(Node* node);
@@ -166,6 +165,7 @@ namespace parse {
             friend class NodeCopy;
 
             Context* m_ctx;
+            NodeType m_type;
             SourceLocation m_location;
             bool m_isError;
     };

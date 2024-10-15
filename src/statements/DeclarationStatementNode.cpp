@@ -7,7 +7,7 @@
 
 namespace parse {
     DeclarationStatementNode::DeclarationStatementNode(Context* ctx)
-        : Node(ctx), isConst(false), isArrayDestructure(false), isObjectDestructure(false), assignable(nullptr),
+        : Node(ctx, NodeType::DeclarationStatementNode), isConst(false), isArrayDestructure(false), isObjectDestructure(false), assignable(nullptr),
         typedAssignable(nullptr), initializer(nullptr)
     {}
     DeclarationStatementNode::~DeclarationStatementNode() {}

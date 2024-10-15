@@ -3,7 +3,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    IdentifierNode::IdentifierNode(Context* ctx) : Node(ctx) {}
+    IdentifierNode::IdentifierNode(Context* ctx) : Node(ctx, NodeType::IdentifierNode) {}
     IdentifierNode::~IdentifierNode() {}
     void IdentifierNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     IdentifierNode* IdentifierNode::Create(Context* ctx) { return new (ctx->allocNode()) IdentifierNode(ctx); }

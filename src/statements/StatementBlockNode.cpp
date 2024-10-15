@@ -4,7 +4,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    StatementBlockNode::StatementBlockNode(Context* ctx) : Node(ctx) {}
+    StatementBlockNode::StatementBlockNode(Context* ctx) : Node(ctx, NodeType::StatementBlockNode) {}
     StatementBlockNode::~StatementBlockNode() {}
     void StatementBlockNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     StatementBlockNode* StatementBlockNode::Create(Context* ctx) { return new (ctx->allocNode()) StatementBlockNode(ctx); }

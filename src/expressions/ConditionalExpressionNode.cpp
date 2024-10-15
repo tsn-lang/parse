@@ -5,7 +5,7 @@
 
 namespace parse {
     ConditionalExpressionNode::ConditionalExpressionNode(Context* ctx)
-        : Node(ctx), condition(nullptr), valueOnTrue(nullptr), valueOnFalse(nullptr)
+        : Node(ctx, NodeType::ConditionalExpressionNode), condition(nullptr), valueOnTrue(nullptr), valueOnFalse(nullptr)
     {}
     void ConditionalExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ConditionalExpressionNode* ConditionalExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) ConditionalExpressionNode(ctx); }

@@ -7,7 +7,7 @@
 
 namespace parse {
     BinaryExpressionNode::BinaryExpressionNode(Context* ctx)
-        : Node(ctx), lhs(nullptr), rhs(nullptr), operation(OperatorType::Invalid)
+        : Node(ctx, NodeType::BinaryExpressionNode), lhs(nullptr), rhs(nullptr), operation(OperatorType::Invalid)
     {}
     void BinaryExpressionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     BinaryExpressionNode* BinaryExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) BinaryExpressionNode(ctx); }

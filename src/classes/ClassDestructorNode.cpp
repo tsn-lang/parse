@@ -5,7 +5,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    ClassDestructorNode::ClassDestructorNode(Context* ctx) : Node(ctx), isPublic(true), body(nullptr) {}
+    ClassDestructorNode::ClassDestructorNode(Context* ctx) : Node(ctx, NodeType::ClassDestructorNode), isPublic(true), body(nullptr) {}
     ClassDestructorNode::~ClassDestructorNode() {}
     void ClassDestructorNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ClassDestructorNode* ClassDestructorNode::Create(Context* ctx) { return new (ctx->allocNode()) ClassDestructorNode(ctx); }

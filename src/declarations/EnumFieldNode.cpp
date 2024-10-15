@@ -4,7 +4,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    EnumFieldNode::EnumFieldNode(Context* ctx) : Node(ctx), value(nullptr) {}
+    EnumFieldNode::EnumFieldNode(Context* ctx) : Node(ctx, NodeType::EnumFieldNode), value(nullptr) {}
     EnumFieldNode::~EnumFieldNode() {}
     void EnumFieldNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     EnumFieldNode* EnumFieldNode::Create(Context* ctx) { return new (ctx->allocNode()) EnumFieldNode(ctx); }

@@ -4,7 +4,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    TypedAssignableNode::TypedAssignableNode(Context* ctx) : Node(ctx), type(nullptr) {}
+    TypedAssignableNode::TypedAssignableNode(Context* ctx) : Node(ctx, NodeType::TypedAssignableNode), type(nullptr) {}
     TypedAssignableNode::~TypedAssignableNode() {}
     void TypedAssignableNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     TypedAssignableNode* TypedAssignableNode::Create(Context* ctx) { return new (ctx->allocNode()) TypedAssignableNode(ctx); }

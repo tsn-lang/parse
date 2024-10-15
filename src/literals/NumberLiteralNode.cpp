@@ -3,7 +3,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    NumberLiteralNode::NumberLiteralNode(Context* ctx) : Node(ctx) {
+    NumberLiteralNode::NumberLiteralNode(Context* ctx) : Node(ctx, NodeType::NumberLiteralNode) {
         storageSize = sizeof(i32);
         isSigned = true;
         isFloat = false;
