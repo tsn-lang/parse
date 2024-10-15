@@ -27,7 +27,7 @@ cd "../../../src/%dir_name%"
 %printf% "#include <parse/%dir_name%/%header_name%>\n" >> %src_name%
 %printf% "#include <parse/Context.h>\n\n" >> %src_name%
 %printf% "namespace parse {\n" >> %src_name%
-%printf% "    %node_name%::%node_name%(Context* ctx) : Node(ctx) {}\n" >> %src_name%
+%printf% "    %node_name%::%node_name%(Context* ctx) : Node(ctx, NodeType::%node_name%) {}\n" >> %src_name%
 %printf% "    void %node_name%::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }\n" >> %src_name%
 %printf% "    %node_name%* %node_name%::Create(Context* ctx) { return new (ctx->allocNode()) %node_name%(ctx); }\n\n" >> %src_name%
 %printf% "    %node_name%* %node_name%::TryParse(Context* ctx) {\n" >> %src_name%
