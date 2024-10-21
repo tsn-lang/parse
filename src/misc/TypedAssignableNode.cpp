@@ -33,6 +33,7 @@ namespace parse {
             return n;
         }
 
+        n->extendLocation(n->type);
         return n;
     }
 };
