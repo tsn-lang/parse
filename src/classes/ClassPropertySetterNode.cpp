@@ -1,6 +1,7 @@
 #include <parse/classes/ClassPropertySetterNode.h>
 #include <parse/misc/TypedAssignableNode.h>
 #include <parse/misc/TypeParameterListNode.h>
+#include <parse/misc/ParameterListNode.h>
 #include <parse/types/TypeSpecifierNode.h>
 #include <parse/statements/StatementBlockNode.h>
 #include <parse/Context.h>
@@ -10,7 +11,7 @@
 namespace parse {
     ClassPropertySetterNode::ClassPropertySetterNode(Context* ctx)
         : Node(ctx, NodeType::ClassPropertySetterNode), isAsync(false), isStatic(false), isPublic(true), returnType(nullptr), body(nullptr),
-        typeParameters(nullptr)
+        parameters(nullptr), typeParameters(nullptr)
     {}
     ClassPropertySetterNode::~ClassPropertySetterNode() {}
     void ClassPropertySetterNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
@@ -81,54 +82,13 @@ namespace parse {
             if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_OpenParen)) return n;
         }
 
-        if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_OpenParen)) {
-            ctx->logError("Expected '('");
+        n->parameters = ParameterListNode::TryParse(ctx);
+        if (n->parameters) n->extendLocation(n->parameters);
+        else {
+            ctx->logError("Expected parameter list");
             n->m_isError = true;
-            if (!ctx->skipToAnyMatched({
-                // parameter name
-                Match(TokenType::Identifier),
-
-                // end parameter list
-                Match(TokenType::Symbol, TokenSubType::Symbol_CloseParen)
-            })) return n;
-        } else {
-            ctx->consume(n);
+            if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_Colon)) return n;
         }
-
-        TypedAssignableNode* param = TypedAssignableNode::TryParse(ctx);
-        while (param) {
-            if (param->isError()) {
-                param->destroy();
-                if (!ctx->skipToAnyMatched({
-                    Match(TokenType::Symbol, TokenSubType::Symbol_Comma),
-                    Match(TokenType::Symbol, TokenSubType::Symbol_CloseParen)
-                })) return n;
-                break;
-            } else {
-                n->parameters.push(param);
-                n->extendLocation(param);
-            }
-
-            if (ctx->match(TokenType::Symbol, TokenSubType::Symbol_Comma)) {
-                ctx->consume(n);
-                param = TypedAssignableNode::TryParse(ctx);
-
-                if (!param) {
-                    ctx->logError("Expected typed parameter after ','");
-                    n->m_isError = true;
-                    ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseParen);
-                    break;
-                }
-            } else param = nullptr;
-        }
-
-        if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_CloseParen)) {
-            ctx->logError("Expected ')'");
-            n->m_isError = true;
-            return n;
-        }
-
-        ctx->consume(n);
 
         if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_Colon)) {
             ctx->logError("Expected return type specifier");

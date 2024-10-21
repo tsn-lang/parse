@@ -1,7 +1,6 @@
 #pragma once
 #include <parse/misc/Node.h>
 #include <utils/String.h>
-#include <utils/Array.h>
 
 namespace parse {
     class Context;
@@ -21,7 +20,7 @@ namespace parse {
             StatementBlockNode* body;
             
             // this should be empty
-            Array<TypedAssignableNode*> parameters;
+            ParameterListNode* parameters;
 
         private:
             ClassPropertyGetterNode(Context* ctx);

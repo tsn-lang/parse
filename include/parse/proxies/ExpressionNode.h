@@ -10,7 +10,7 @@ namespace parse {
             static ExpressionNode* Create(Context* ctx);
             static ExpressionNode* TryParse(Context* ctx);
             static ExpressionNode* TryParseParenthesized(Context* ctx);
-            static ExpressionNode* TryParsePrimaryExpression(Context* ctx);
+            static Node* TryParsePrimaryExpression(Context* ctx);
 
             Node* expr;
         private:

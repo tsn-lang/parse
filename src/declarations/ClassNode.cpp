@@ -13,7 +13,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    ClassNode::ClassNode(Context* ctx) : Node(ctx, NodeType::ClassNode), dtor(nullptr), typeParameters(nullptr) {}
+    ClassNode::ClassNode(Context* ctx) : Node(ctx, NodeType::ClassNode), isDeclaration(false), dtor(nullptr), typeParameters(nullptr) {}
     ClassNode::~ClassNode() {}
     void ClassNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ClassNode* ClassNode::Create(Context* ctx) { return new (ctx->allocNode()) ClassNode(ctx); }
@@ -70,23 +70,25 @@ namespace parse {
                     if (!ext) {
                         ctx->logError("Expected type specifier after ','");
                         n->m_isError = true;
-                        ctx->skipToAnyMatched({
+                        if (!ctx->skipToAnyMatched({
                             Match(TokenType::Symbol, TokenSubType::Symbol_OpenBrace),
                             Match(TokenType::EndOfStatement)
-                        });
+                        })) return n;
+
                         break;
-                    } else ext = nullptr;
-                }
+                    }
+                } else ext = nullptr;
             }
         }
 
         if (ctx->match(TokenType::EndOfStatement)) {
+            n->isDeclaration = true;
             ctx->consume();
             return n;
         }
 
         if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_OpenBrace)) {
-            ctx->logError("Expected ';' or class body");
+            ctx->logError("Expected class body");
             n->m_isError = true;
             return n;
         }
@@ -217,7 +219,7 @@ namespace parse {
         }
         
         if (!didMatchCloseBrace) {
-            ctx->logError("Expected '}' to end class body");
+            ctx->logError("Expected '}'");
             n->m_isError = true;
         }
 

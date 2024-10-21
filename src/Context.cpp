@@ -326,7 +326,7 @@ namespace parse {
         
         u32 idx = m_curState->tokenIndex;
         for (const Match& m : matchList) {
-            const Token* tok = m_tokens[idx];
+            const Token* tok = m_tokens[idx++];
             if (tok->type != m.type || tok->subType != i32(m.subType) || (m.exactText && tok->toString() != m.exactText)) {
                 return false;
             }

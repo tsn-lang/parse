@@ -52,7 +52,7 @@ namespace parse {
                 );
 
                 String exprSrc;
-                exprSrc.copy(begin + 1, length - 2);
+                exprSrc.copy(begin + 1, length - 1);
                 Resource sr(exprSrc.c_str(), n->getLocation().resourceId);
                 TokenizedSource* ts = nullptr;
 
@@ -110,7 +110,7 @@ namespace parse {
 
                 if (ts) delete ts;
 
-                i += length;
+                i += length + 1;
                 continue;
             }
         

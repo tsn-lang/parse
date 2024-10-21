@@ -14,6 +14,7 @@ namespace parse {
             static ClassNode* TryParse(Context* ctx);
 
             String name;
+            bool isDeclaration;
             Array<TypeSpecifierNode*> extends;
             Array<ClassPropertyNode*> properties;
             Array<ClassMethodNode*> methods;

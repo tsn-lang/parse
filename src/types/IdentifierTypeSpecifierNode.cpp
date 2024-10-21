@@ -57,11 +57,22 @@ namespace parse {
         }
 
         if (!ctx->match(TokenType::Symbol, TokenSubType::Operator_GreaterThan)) {
-            ctx->logError("Expected '>'");
-            n->m_isError = true;
-            return n;
+            if (n->parameters.size() > 1) {
+                ctx->logError("Expected '>'");
+                n->m_isError = true;
+                return n;
+            }
+
+            ctx->rollback();
+            for (u32 i = 0;i < n->parameters.size();i++) {
+                n->parameters[i]->destroy();
+            }
+
+            n->destroy();
+            return nullptr;
         }
         
+        ctx->commit();
         ctx->consume(n);
 
         return n;

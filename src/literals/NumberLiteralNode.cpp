@@ -14,7 +14,21 @@ namespace parse {
 
     NumberLiteralNode* NumberLiteralNode::TryParse(Context* ctx) {
         if (!ctx->match(TokenType::Literal)) return nullptr;
+        
         const Token* tok = ctx->get();
+        switch (TokenSubType(tok->subType)) {
+            case TokenSubType::Literal_Int8: break;
+            case TokenSubType::Literal_Int16: break;
+            case TokenSubType::Literal_Int32: break;
+            case TokenSubType::Literal_Int64: break;
+            case TokenSubType::Literal_UInt8: break;
+            case TokenSubType::Literal_UInt16: break;
+            case TokenSubType::Literal_UInt32: break;
+            case TokenSubType::Literal_UInt64: break;
+            case TokenSubType::Literal_Float32: break;
+            case TokenSubType::Literal_Float64: break;
+            default: return nullptr;
+        }
 
         NumberLiteralNode* n = Create(ctx);
         n->extendLocation(tok);

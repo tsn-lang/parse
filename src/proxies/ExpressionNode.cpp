@@ -58,14 +58,12 @@ namespace parse {
         return n;
     }
 
-    ExpressionNode* ExpressionNode::TryParsePrimaryExpression(Context* ctx) {
+    Node* ExpressionNode::TryParsePrimaryExpression(Context* ctx) {
         if (ctx->atEnd()) return nullptr;
 
         if (ctx->match(TokenType::Keyword, TokenSubType::Keyword_This)) {
-            ExpressionNode* n = Create(ctx);
-            n->expr = ThisExpressionNode::Create(ctx);
-            ctx->consume(n->expr);
-            n->extendLocation(n->expr);
+            ThisExpressionNode* n = ThisExpressionNode::Create(ctx);
+            ctx->consume(n);
             return n;
         }
 
@@ -75,20 +73,14 @@ namespace parse {
             if (ts) {
                 if (!ts->isError() && ts->parameters.size() > 0) {
                     ctx->commit();
-                    ExpressionNode* n = Create(ctx);
-                    n->expr = ts;
-                    n->extendLocation(ts);
-                    return n;
+                    return ts;
                 }
                 
                 ctx->rollback();
                 ts->destroy();
             }
 
-            ExpressionNode* n = Create(ctx);
-            n->expr = IdentifierNode::TryParse(ctx);
-            n->extendLocation(n->expr);
-            return n;
+            return IdentifierNode::TryParse(ctx);
         }
 
         if (ctx->match(TokenType::Symbol, TokenSubType::Symbol_OpenParen)) {
@@ -102,13 +94,10 @@ namespace parse {
             ctx->rollback();
             if (pe) pe->destroy();
 
-            ExpressionSequenceNode* es = ExpressionSequenceNode::TryParse(ctx);
+            ExpressionSequenceNode* es = ExpressionSequenceNode::TryParseParenthesized(ctx);
             if (es && !es->isError()) {
                 ctx->commit();
-                ExpressionNode* n = Create(ctx);
-                n->expr = es;
-                n->extendLocation(n->expr);
-                return n;
+                return es;
             }
 
             ctx->rollback();
@@ -116,66 +105,28 @@ namespace parse {
         }
 
         TypeInfoExpressionNode* ti = TypeInfoExpressionNode::TryParse(ctx);
-        if (ti) {
-            ExpressionNode* n = Create(ctx);
-            n->expr = ti;
-            n->m_isError = ti->isError();
-            n->extendLocation(ti);
-            return n;
-        }
+        if (ti) return ti;
 
         SizeOfExpressionNode* so = SizeOfExpressionNode::TryParse(ctx);
-        if (so) {
-            ExpressionNode* n = Create(ctx);
-            n->expr = so;
-            n->m_isError = so->isError();
-            n->extendLocation(so);
-            return n;
-        }
+        if (so) return so;
 
         if (ctx->match(TokenType::Literal, TokenSubType::Literal_Null)) {
-            ExpressionNode* n = Create(ctx);
-            n->expr = NullLiteralNode::Create(ctx);
-            ctx->consume(n->expr);
-            n->extendLocation(n->expr);
+            NullLiteralNode* n = NullLiteralNode::Create(ctx);
+            ctx->consume(n);
             return n;
         }
 
         BooleanLiteralNode* bl = BooleanLiteralNode::TryParse(ctx);
-        if (bl) {
-            ExpressionNode* n = Create(ctx);
-            n->expr = bl;
-            n->m_isError = bl->isError();
-            n->extendLocation(bl);
-            return n;
-        }
+        if (bl) return bl;
 
         NumberLiteralNode* nl = NumberLiteralNode::TryParse(ctx);
-        if (nl) {
-            ExpressionNode* n = Create(ctx);
-            n->expr = nl;
-            n->m_isError = nl->isError();
-            n->extendLocation(nl);
-            return n;
-        }
+        if (nl) return nl;
 
         StringLiteralNode* sl = StringLiteralNode::TryParse(ctx);
-        if (sl) {
-            ExpressionNode* n = Create(ctx);
-            n->expr = sl;
-            n->m_isError = sl->isError();
-            n->extendLocation(sl);
-            return n;
-        }
+        if (sl) return sl;
 
         TemplateStringLiteralNode* ts = TemplateStringLiteralNode::TryParse(ctx);
-        if (ts) {
-            ExpressionNode* n = Create(ctx);
-            n->expr = ts;
-            n->m_isError = ts->isError();
-            n->extendLocation(ts);
-            return n;
-        }
+        if (ts) return ts;
 
         return nullptr;
     }

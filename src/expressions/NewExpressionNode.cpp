@@ -11,7 +11,7 @@ namespace parse {
     NewExpressionNode* NewExpressionNode::Create(Context* ctx) { return new (ctx->allocNode()) NewExpressionNode(ctx); }
 
     Node* NewExpressionNode::TryParse(Context* ctx) {
-        if (ctx->match(TokenType::Keyword, TokenSubType::Keyword_New)) {
+        if (!ctx->match(TokenType::Keyword, TokenSubType::Keyword_New)) {
             return MemberExpressionNode::TryParse(ctx);
         }
 

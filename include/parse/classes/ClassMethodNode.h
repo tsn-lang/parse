@@ -1,6 +1,5 @@
 #pragma once
 #include <parse/misc/Node.h>
-#include <utils/Array.h>
 #include <utils/String.h>
 
 namespace parse {
@@ -17,7 +16,7 @@ namespace parse {
             bool isStatic;
             bool isPublic;
             String name;
-            Array<TypedAssignableNode*> parameters;
+            ParameterListNode* parameters;
             TypeSpecifierNode* returnType;
             StatementBlockNode* body;
             TypeParameterListNode* typeParameters;

@@ -153,6 +153,7 @@ namespace parse {
         ts->addStringToken(":",               TokenType::Symbol,  i32(TokenSubType::Symbol_Colon          ));
         ts->addStringToken(".",               TokenType::Symbol,  i32(TokenSubType::Symbol_Dot            ));
         ts->addStringToken("=>",              TokenType::Symbol,  i32(TokenSubType::Symbol_Arrow          ));
+        ts->addStringToken("=",               TokenType::Symbol,  i32(TokenSubType::Symbol_Equal          ));
         ts->addStringToken("+",               TokenType::Symbol,  i32(TokenSubType::Operator_Add          ));
         ts->addStringToken("-",               TokenType::Symbol,  i32(TokenSubType::Operator_Sub          ));
         ts->addStringToken("*",               TokenType::Symbol,  i32(TokenSubType::Operator_Mul          ));
@@ -192,6 +193,7 @@ namespace parse {
         ts->addStringToken("null",            TokenType::Literal, i32(TokenSubType::Literal_Null          ));
         ts->addStringToken("true",            TokenType::Literal, i32(TokenSubType::Literal_True          ));
         ts->addStringToken("false",           TokenType::Literal, i32(TokenSubType::Literal_False         ));
+        ts->addStringToken(";",               TokenType::EndOfStatement);
 
         ts->addCustomToken(matchTemplateString);
 

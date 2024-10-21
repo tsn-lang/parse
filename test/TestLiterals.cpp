@@ -28,11 +28,9 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
 
     SECTION("Null literal") {
         TestContext test("null");
-        ExpressionNode* n1 = ExpressionNode::TryParsePrimaryExpression(test.ctx);
+        Node* n1 = ExpressionNode::TryParsePrimaryExpression(test.ctx);
         REQUIRE(n1 != nullptr);
-        REQUIRE(n1->getType() == NodeType::ExpressionNode);
-        REQUIRE(n1->expr != nullptr);
-        REQUIRE(n1->expr->getType() == NodeType::NullLiteralNode);
+        REQUIRE(n1->getType() == NodeType::NullLiteralNode);
     }
     
     SECTION("Number literals") {
@@ -144,5 +142,57 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         REQUIRE(n != nullptr);
         REQUIRE(n->getType() == NodeType::StringLiteralNode);
         REQUIRE((n->value == "test 'string'\n"));
+    }
+
+    SECTION("Template string literals") {
+        TestContext test("`this ${'is'} a ${`test`}. ${123}`");
+        //                0123456789111111111122222222223333
+        //                          012345678901234567890123
+        TemplateStringLiteralNode* n = nullptr;
+
+        n = TemplateStringLiteralNode::TryParse(test.ctx);
+        SourceLocation loc;
+
+        REQUIRE(n != nullptr);
+        REQUIRE(n->segments.size() == 6);
+
+        REQUIRE(n->segments[0].expr == nullptr);
+        REQUIRE((n->segments[0].text == "this "));
+
+        REQUIRE(n->segments[1].expr != nullptr);
+        REQUIRE(n->segments[1].text.size() == 0);
+        REQUIRE(n->segments[1].expr->expr != nullptr);
+        REQUIRE(n->segments[1].expr->expr->getType() == NodeType::StringLiteralNode);
+        StringLiteralNode* sl = (StringLiteralNode*)n->segments[1].expr->expr;
+        REQUIRE((sl->value == "is"));
+        loc = n->segments[1].expr->expr->getLocation();
+        REQUIRE(loc.startBufferPosition == 8);
+        REQUIRE(loc.endBufferPosition == 12);
+
+        REQUIRE(n->segments[2].expr == nullptr);
+        REQUIRE((n->segments[2].text == " a "));
+
+        REQUIRE(n->segments[3].expr != nullptr);
+        REQUIRE(n->segments[3].text.size() == 0);
+        REQUIRE(n->segments[3].expr->expr != nullptr);
+        REQUIRE(n->segments[3].expr->expr->getType() == NodeType::TemplateStringLiteralNode);
+        TemplateStringLiteralNode* tl = (TemplateStringLiteralNode*)n->segments[3].expr->expr;
+        REQUIRE(tl->segments.size() == 1);
+        REQUIRE(tl->segments[0].expr == nullptr);
+        REQUIRE((tl->segments[0].text == "test"));
+        REQUIRE(tl->getLocation().startBufferPosition == 18);
+        REQUIRE(tl->getLocation().endBufferPosition == 24);
+
+        REQUIRE(n->segments[4].expr == nullptr);
+        REQUIRE((n->segments[4].text == ". "));
+
+        REQUIRE(n->segments[5].expr != nullptr);
+        REQUIRE(n->segments[5].text.size() == 0);
+        REQUIRE(n->segments[5].expr->expr != nullptr);
+        REQUIRE(n->segments[5].expr->expr->getType() == NodeType::NumberLiteralNode);
+        NumberLiteralNode* nl = (NumberLiteralNode*)n->segments[5].expr->expr;
+        REQUIRE(nl->value.s == 123);
+        REQUIRE(nl->getLocation().startBufferPosition == 29);
+        REQUIRE(nl->getLocation().endBufferPosition == 32);
     }
 }

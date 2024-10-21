@@ -18,6 +18,12 @@ namespace parse {
 
         StatementNode* stmt = StatementNode::TryParse(ctx);
         if (!stmt) {
+            if (ctx->match(TokenType::Symbol, TokenSubType::Symbol_CloseBrace)) {
+                ctx->commit();
+                ctx->consume(n);
+                return n;
+            }
+
             ctx->rollback();
             n->destroy();
             return nullptr;

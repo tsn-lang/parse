@@ -1,16 +1,16 @@
 #include <parse/classes/ClassMethodNode.h>
 #include <parse/misc/TypedAssignableNode.h>
 #include <parse/misc/TypeParameterListNode.h>
+#include <parse/misc/ParameterListNode.h>
 #include <parse/statements/StatementBlockNode.h>
 #include <parse/types/TypeSpecifierNode.h>
 #include <parse/Context.h>
 #include <tokenize/Token.h>
-#include <utils/Array.hpp>
 
 namespace parse {
     ClassMethodNode::ClassMethodNode(Context* ctx)
-        : Node(ctx, NodeType::ClassMethodNode), isPublic(true), isStatic(false), isAsync(false), returnType(nullptr), body(nullptr),
-        typeParameters(nullptr)
+        : Node(ctx, NodeType::ClassMethodNode), isPublic(true), isStatic(false), isAsync(false), returnType(nullptr),
+        parameters(nullptr), body(nullptr), typeParameters(nullptr)
     {}
     ClassMethodNode::~ClassMethodNode() {}
     void ClassMethodNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
@@ -51,9 +51,13 @@ namespace parse {
             return nullptr;
         }
 
-        // Safe to commit now, method declarations are the only rule that match the pattern:
-        // ["public" | "private"], ["static"], ["async"], identifier
-        ctx->commit();
+        bool didCommit = false;
+        if (n->isAsync) {
+            // Safe to commit now, method declarations are the only rule that match the pattern:
+            // ["public" | "private"], ["static"], "async", identifier
+            ctx->commit();
+            didCommit = true;
+        }
 
         const Token* nameTok = ctx->get();
         n->extendLocation(nameTok);
@@ -61,51 +65,56 @@ namespace parse {
         ctx->consume();
         
         n->typeParameters = TypeParameterListNode::TryParse(ctx);
-        if (n->typeParameters && n->typeParameters->isError()) {
-            n->m_isError = true;
-
-            if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_OpenParen)) return n;
-        }
-
-        if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_OpenParen)) {
-            ctx->logError("Expected '('");
-            n->m_isError = true;
-            return n;
-        }
-
-        ctx->consume(n);
-
-        TypedAssignableNode* param = TypedAssignableNode::TryParse(ctx);
-        while (param) {
-            if (param->isError()) {
-                param->destroy();
-                ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseParen);
-                break;
+        if (n->typeParameters) {
+            if (n->typeParameters->isError()) {
+                if (didCommit) {
+                    n->m_isError = true;
+                    if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_OpenParen)) return n;
+                } else {
+                    n->destroy();
+                    n->typeParameters->destroy();
+                    ctx->rollback();
+                    return nullptr;
+                }
             }
 
-            n->parameters.push(param);
-            n->extendLocation(param);
+            n->extendLocation(n->typeParameters);
+        }
 
-            if (ctx->match(TokenType::Symbol, TokenSubType::Symbol_Comma)) {
-                ctx->consume(n);
-                param = TypedAssignableNode::TryParse(ctx);
-
-                if (!param) {
-                    ctx->logError("Expected typed parameter after ','");
+        n->parameters = ParameterListNode::TryParse(ctx);
+        if (n->parameters) {
+            if (n->parameters->isError()) {
+                if (didCommit) {
                     n->m_isError = true;
-                    ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseParen);
-                    break;
+                    if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_Colon)) return n;
+                } else {
+                    n->destroy();
+                    n->parameters->destroy();
+                    if (n->typeParameters) n->typeParameters->destroy();
+                    ctx->rollback();
+                    return nullptr;
                 }
-            } else param = nullptr;
-        }
+            }
 
-        if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_CloseParen)) {
-            ctx->logError("Expected ')'");
-            n->m_isError = true;
-            return n;
+            n->extendLocation(n->parameters);
+        } else {
+            if (didCommit) {
+                ctx->logError("Expected parameter list");
+                n->m_isError = true;
+                if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_Colon)) return n;
+            } else {
+                n->destroy();
+                if (n->typeParameters) n->typeParameters->destroy();
+                ctx->rollback();
+                return nullptr;
+            }
         }
-
-        ctx->consume(n);
+        
+        if (!didCommit) {
+            // Safe to commit now, method declarations are the only rule that match the pattern:
+            // ["public" | "private"], ["static"], ["async"], identifier, "("
+            ctx->commit();
+        }
 
         if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_Colon)) {
             ctx->logError("Expected return type specifier");
@@ -140,7 +149,7 @@ namespace parse {
 
         n->body = StatementBlockNode::TryParse(ctx);
         if (!n->body) {
-            ctx->logError("Expected function body or ';'");
+            ctx->logError("Expected function body");
             n->m_isError = true;
             return n;
         }

@@ -173,7 +173,7 @@ namespace parse {
 
         n->isPublic = node->isPublic;
         n->body = copyChildNode(node->body);
-        copyChildNodeArray(node->parameters, n->parameters);
+        n->parameters = copyChildNode(node->parameters);
 
         useResult(n, node);
     }
@@ -183,7 +183,7 @@ namespace parse {
 
         n->isPublic = node->isPublic;
         n->body = copyChildNode(node->body);
-        copyChildNodeArray(node->parameters, n->parameters);
+        n->parameters = copyChildNode(node->parameters);
 
         useResult(n, node);
     }
@@ -198,7 +198,7 @@ namespace parse {
         n->returnType = copyChildNode(node->returnType);
         n->body = copyChildNode(node->body);
         n->typeParameters = copyChildNode(node->typeParameters);
-        copyChildNodeArray(node->parameters, n->parameters);
+        n->parameters = copyChildNode(node->parameters);
 
         useResult(n, node);
     }
@@ -244,7 +244,7 @@ namespace parse {
         n->propertyName = node->propertyName;
         n->returnType = copyChildNode(node->returnType);
         n->body = copyChildNode(node->body);
-        copyChildNodeArray(node->parameters, n->parameters);
+        n->parameters = copyChildNode(node->parameters);
 
         useResult(n, node);
     }
@@ -270,7 +270,7 @@ namespace parse {
         n->returnType = copyChildNode(node->returnType);
         n->body = copyChildNode(node->body);
         n->typeParameters = copyChildNode(node->typeParameters);
-        copyChildNodeArray(node->parameters, n->parameters);
+        n->parameters = copyChildNode(node->parameters);
 
         useResult(n, node);
     }

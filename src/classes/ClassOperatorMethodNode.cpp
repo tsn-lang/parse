@@ -58,30 +58,27 @@ namespace parse {
         ctx->consume(n);
 
         bool allowOptionalPostfixSpecifier = false;
+        if (ctx->matchAll({
+            Match(TokenType::Symbol, TokenSubType::Symbol_OpenParen),
+            Match(TokenType::Symbol, TokenSubType::Symbol_CloseParen),
+            Match(TokenType::Symbol, TokenSubType::Symbol_OpenParen)
+        })) {
+            // operator ()(...)
+            ctx->consume(n);
+            ctx->consume(n);
 
-        if (!ctx->match(TokenType::Symbol)) {
-            if (ctx->matchAll({
-                Match(TokenType::Symbol, TokenSubType::Symbol_OpenParen),
-                Match(TokenType::Symbol, TokenSubType::Symbol_CloseParen),
-                Match(TokenType::Symbol, TokenSubType::Symbol_OpenParen)
-            })) {
-                // operator ()(...)
-                ctx->consume(n);
+            n->operation = OperatorType::Call;
+        } else if(ctx->matchAll({
+            Match(TokenType::Symbol, TokenSubType::Symbol_OpenBracket),
+            Match(TokenType::Symbol, TokenSubType::Symbol_CloseBracket),
+        })) {
+            // operator [](...)
+            ctx->consume(n);
+            ctx->consume(n);
 
-                ctx->consume(n);
-
-                n->operation = OperatorType::Call;
-            } else if(ctx->matchAll({
-                Match(TokenType::Symbol, TokenSubType::Symbol_OpenBracket),
-                Match(TokenType::Symbol, TokenSubType::Symbol_CloseBracket),
-            })) {
-                // operator [](...)
-                ctx->consume(n);
-                
-                ctx->consume(n);
-
-                n->operation = OperatorType::Index;
-            } else if(ctx->match(TokenType::Keyword, TokenSubType::Keyword_As)) {
+            n->operation = OperatorType::Index;
+        } else if (!ctx->match(TokenType::Symbol)) {
+            if(ctx->match(TokenType::Keyword, TokenSubType::Keyword_As)) {
                 // operator as(...)
                 ctx->consume(n);
 
@@ -125,6 +122,7 @@ namespace parse {
                 case TokenSubType::Operator_LogicalAndEq:
                 case TokenSubType::Operator_LogicalOrEq:
                 case TokenSubType::Operator_Not:
+                case TokenSubType::Operator_Assign:
                 case TokenSubType::Operator_Equality:
                 case TokenSubType::Operator_Inequality:
                 case TokenSubType::Operator_LessThan:

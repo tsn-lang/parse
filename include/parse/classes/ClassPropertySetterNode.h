@@ -17,12 +17,11 @@ namespace parse {
             bool isStatic;
             bool isPublic;
             String propertyName;
-            TypedAssignableNode* parameter;
             TypeSpecifierNode* returnType;
             StatementBlockNode* body;
             
             // this should contain exactly one node
-            Array<TypedAssignableNode*> parameters;
+            ParameterListNode* parameters;
             TypeParameterListNode* typeParameters;
 
         private:

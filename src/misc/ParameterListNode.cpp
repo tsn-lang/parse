@@ -30,7 +30,7 @@ namespace parse {
                 param = TypedAssignableNode::TryParse(ctx);
 
                 if (!param) {
-                    ctx->logError("Expected type parameter after ','");
+                    ctx->logError("Expected parameter after ','");
                     n->m_isError = true;
                     ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseParen);
                     break;
