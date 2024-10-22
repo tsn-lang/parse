@@ -141,7 +141,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         n = StringLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
         REQUIRE(n->getType() == NodeType::StringLiteralNode);
-        REQUIRE((n->value == "test 'string'\n"));
+        REQUIRE(n->value == "test 'string'\n");
     }
 
     SECTION("Template string literals") {
@@ -157,20 +157,20 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         REQUIRE(n->segments.size() == 6);
 
         REQUIRE(n->segments[0].expr == nullptr);
-        REQUIRE((n->segments[0].text == "this "));
+        REQUIRE(n->segments[0].text == "this ");
 
         REQUIRE(n->segments[1].expr != nullptr);
         REQUIRE(n->segments[1].text.size() == 0);
         REQUIRE(n->segments[1].expr->expr != nullptr);
         REQUIRE(n->segments[1].expr->expr->getType() == NodeType::StringLiteralNode);
         StringLiteralNode* sl = (StringLiteralNode*)n->segments[1].expr->expr;
-        REQUIRE((sl->value == "is"));
+        REQUIRE(sl->value == "is");
         loc = n->segments[1].expr->expr->getLocation();
         REQUIRE(loc.startBufferPosition == 8);
         REQUIRE(loc.endBufferPosition == 12);
 
         REQUIRE(n->segments[2].expr == nullptr);
-        REQUIRE((n->segments[2].text == " a "));
+        REQUIRE(n->segments[2].text == " a ");
 
         REQUIRE(n->segments[3].expr != nullptr);
         REQUIRE(n->segments[3].text.size() == 0);
@@ -179,12 +179,12 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         TemplateStringLiteralNode* tl = (TemplateStringLiteralNode*)n->segments[3].expr->expr;
         REQUIRE(tl->segments.size() == 1);
         REQUIRE(tl->segments[0].expr == nullptr);
-        REQUIRE((tl->segments[0].text == "test"));
+        REQUIRE(tl->segments[0].text == "test");
         REQUIRE(tl->getLocation().startBufferPosition == 18);
         REQUIRE(tl->getLocation().endBufferPosition == 24);
 
         REQUIRE(n->segments[4].expr == nullptr);
-        REQUIRE((n->segments[4].text == ". "));
+        REQUIRE(n->segments[4].text == ". ");
 
         REQUIRE(n->segments[5].expr != nullptr);
         REQUIRE(n->segments[5].text.size() == 0);

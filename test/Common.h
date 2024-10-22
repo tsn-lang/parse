@@ -5,8 +5,10 @@
 #include <tokenize/TokenizedSource.h>
 #include <tokenize/Resource.h>
 #include <tokenize/TokenSet.h>
+#include <utils/String.h>
 
 using namespace parse;
+
 CATCH_REGISTER_ENUM(NodeType,
     NodeType::Node,
     NodeType::ArrayTypeNode,
@@ -124,6 +126,15 @@ CATCH_REGISTER_ENUM(OperatorType,
     OperatorType::PreDecrement,
     OperatorType::PostDecrement
 );
+
+namespace Catch {
+    template<>
+    struct StringMaker<utils::String> {
+        static std::string convert( utils::String const& value ) {
+            return utils::String::Format("\"%s\"", value.c_str());
+        }
+    };
+}
 
 void setupTest();
 

@@ -64,7 +64,7 @@ TEST_CASE("Test ArrowFunctionExpressionNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE((((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32"));
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32");
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }
 
@@ -1070,11 +1070,11 @@ TEST_CASE("Test CastExpressionNode", "[parse]") {
     CastExpressionNode* c = (CastExpressionNode*)n;
     REQUIRE(c->expr != nullptr);
     REQUIRE(c->expr->getType() == NodeType::IdentifierNode);
-    REQUIRE((((IdentifierNode*)c->expr)->text == "test"));
+    REQUIRE(((IdentifierNode*)c->expr)->text == "test");
     REQUIRE(c->asType != nullptr);
     REQUIRE(c->asType->type != nullptr);
     REQUIRE(c->asType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-    REQUIRE((((IdentifierTypeSpecifierNode*)c->asType->type)->name == "i32"));
+    REQUIRE(((IdentifierTypeSpecifierNode*)c->asType->type)->name == "i32");
     REQUIRE(test.ctx->getState()->messages.size() == 0);
 }
 
@@ -1088,7 +1088,7 @@ TEST_CASE("Test ConditionalExpressionNode", "[parse]") {
     ConditionalExpressionNode* c = (ConditionalExpressionNode*)n;
     REQUIRE(c->condition != nullptr);
     REQUIRE(c->condition->getType() == NodeType::IdentifierNode);
-    REQUIRE((((IdentifierNode*)c->condition)->text == "test"));
+    REQUIRE(((IdentifierNode*)c->condition)->text == "test");
 
     REQUIRE(c->valueOnTrue != nullptr);
     REQUIRE(c->valueOnTrue->getType() == NodeType::ExpressionNode);
@@ -1227,7 +1227,7 @@ TEST_CASE("Test FunctionExpressionNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE((((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32"));
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32");
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }
 
@@ -1395,7 +1395,7 @@ TEST_CASE("Test MemberExpressionNode", "[parse]") {
         REQUIRE(n->isError() == false);
         
         c = (MemberExpressionNode*)n;
-        REQUIRE((c->propertyName == "prop"));
+        REQUIRE(c->propertyName == "prop");
         REQUIRE(test.ctx->getState()->messages.size() == 0);
     }
 
@@ -1488,7 +1488,7 @@ TEST_CASE("Test NewExpressionNode", "[parse]") {
         REQUIRE(e->type != nullptr);
         REQUIRE(e->type->type != nullptr);
         REQUIRE(e->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE((((IdentifierTypeSpecifierNode*)e->type->type)->name == "Type"));
+        REQUIRE(((IdentifierTypeSpecifierNode*)e->type->type)->name == "Type");
 
         REQUIRE(test.ctx->getState()->messages.size() == 0);
     }
@@ -1545,7 +1545,7 @@ TEST_CASE("Test NewExpressionNode", "[parse]") {
         REQUIRE(e->destination->getType() == NodeType::ExpressionNode);
         REQUIRE(((ExpressionNode*)e->destination)->expr != nullptr);
         REQUIRE(((ExpressionNode*)e->destination)->expr->getType() == NodeType::IdentifierNode);
-        REQUIRE((((IdentifierNode*)((ExpressionNode*)e->destination)->expr)->text == "mem"));
+        REQUIRE(((IdentifierNode*)((ExpressionNode*)e->destination)->expr)->text == "mem");
 
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }

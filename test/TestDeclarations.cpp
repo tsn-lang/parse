@@ -19,7 +19,7 @@ TEST_CASE("Test EnumFieldNode", "[parse]") {
         TestContext test("field = 0");
         EnumFieldNode* n = EnumFieldNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
-        REQUIRE((n->name == "field"));
+        REQUIRE(n->name == "field");
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
     }
@@ -54,7 +54,7 @@ TEST_CASE("Test EnumNode", "[parse]") {
         TestContext test("enum Test;");
         EnumNode* n = EnumNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
-        REQUIRE((n->name == "Test"));
+        REQUIRE(n->name == "Test");
         REQUIRE(n->fields.size() == 0);
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
@@ -69,7 +69,7 @@ TEST_CASE("Test EnumNode", "[parse]") {
         );
         EnumNode* n = EnumNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
-        REQUIRE((n->name == "Test"));
+        REQUIRE(n->name == "Test");
         REQUIRE(n->fields.size() == 2);
         REQUIRE(n->fields[0] != nullptr);
         REQUIRE(n->fields[0]->isError() == false);
@@ -94,7 +94,7 @@ TEST_CASE("Test FunctionNode", "[parse]") {
         FunctionNode* n = FunctionNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
         REQUIRE(n->isAsync == false);
-        REQUIRE((n->name == "test"));
+        REQUIRE(n->name == "test");
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
     }
@@ -174,7 +174,7 @@ TEST_CASE("Test FunctionNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE((((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "void"));
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "void");
         REQUIRE(n->isError() == false);
         REQUIRE(test0.ctx->getState()->messages.size() == 0);
 
@@ -184,7 +184,7 @@ TEST_CASE("Test FunctionNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE((((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32"));
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32");
         REQUIRE(n->isError() == false);
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }
@@ -195,7 +195,7 @@ TEST_CASE("Test TypeNode", "[parse]") {
         TestContext test("type Test;");
         TypeNode* n = TypeNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
-        REQUIRE((n->name == "Test"));
+        REQUIRE(n->name == "Test");
         REQUIRE(n->type == nullptr);
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
@@ -228,7 +228,7 @@ TEST_CASE("Test TypeNode", "[parse]") {
         REQUIRE(n->type != nullptr);
         REQUIRE(n->type->type != nullptr);
         REQUIRE(n->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE((((IdentifierTypeSpecifierNode*)n->type->type)->name == "void"));
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->type->type)->name == "void");
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
     }
