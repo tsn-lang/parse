@@ -2,6 +2,7 @@
 #include <parse/types/TypeSpecifierNode.h>
 #include <parse/misc/TypeParameterListNode.h>
 #include <parse/Context.h>
+#include <tokenize/Token.h>
 
 namespace parse {
     TypeNode::TypeNode(Context* ctx) : Node(ctx, NodeType::TypeNode), type(nullptr), parameters(nullptr) {}
@@ -24,6 +25,9 @@ namespace parse {
             }
         }
 
+        n->name = ctx->get()->toString();
+        ctx->consume(n);
+
         n->parameters = TypeParameterListNode::TryParse(ctx);
         if (n->parameters && n->parameters->isError()) {
             n->m_isError = true;
@@ -31,6 +35,11 @@ namespace parse {
             if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_Equal)) {
                 return n;
             }
+        }
+
+        if (ctx->match(TokenType::EndOfStatement)) {
+            ctx->consume(n);
+            return n;
         }
 
         if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_Equal)) {

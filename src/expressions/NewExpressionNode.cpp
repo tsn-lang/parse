@@ -30,15 +30,25 @@ namespace parse {
 
         n->arguments = ExpressionSequenceNode::TryParseParenthesized(ctx);
         if (!n->arguments) {
-            n->m_isError = true;
-            ctx->logError("Expected argument list");
-            return n;
+            if (ctx->matchAll({
+                Match(TokenType::Symbol, TokenSubType::Symbol_OpenParen),
+                Match(TokenType::Symbol, TokenSubType::Symbol_CloseParen)
+            })) {
+                ctx->consume(n);
+                ctx->consume(n);
+            } else {
+                n->m_isError = true;
+                ctx->logError("Expected argument list");
+                return n;
+            }
+        } else {
+            n->m_isError = n->m_isError || n->arguments->isError();
+            n->extendLocation(n->arguments);
         }
-        n->m_isError = n->m_isError || n->arguments->isError();
-        n->extendLocation(n->arguments);
 
         if (ctx->match(TokenType::Symbol, TokenSubType::Symbol_Arrow)) {
             ctx->consume(n);
+            
             n->destination = ExpressionNode::TryParse(ctx);
             if (!n->destination) {
                 n->m_isError = true;

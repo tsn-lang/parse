@@ -26,7 +26,7 @@ namespace parse {
 
         ExpressionNode* n = Create(ctx);
         n->expr = expr;
-        n->extendLocation(expr);
+        n->m_location = expr->getLocation();
         n->m_isError = expr->isError();
 
         return n;

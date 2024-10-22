@@ -207,6 +207,7 @@ namespace parse {
         ClassNode* n = ClassNode::Create(m_ctx);
 
         n->name = node->name;
+        n->isDeclaration = node->isDeclaration;
         copyChildNodeArray(node->extends, n->extends);
         copyChildNodeArray(node->properties, n->properties);
         copyChildNodeArray(node->methods, n->methods);
@@ -340,6 +341,7 @@ namespace parse {
         EnumNode* n = EnumNode::Create(m_ctx);
 
         n->name = node->name;
+        n->isDeclaration = node->isDeclaration;
         copyChildNodeArray(node->fields, n->fields);
 
         useResult(n, node);
@@ -406,7 +408,7 @@ namespace parse {
         n->returnType = copyChildNode(node->returnType);
         n->body = copyChildNode(node->body);
         n->typeParameters = copyChildNode(node->typeParameters);
-        copyChildNodeArray(node->parameters, n->parameters);
+        n->parameters = copyChildNode(node->parameters);
 
         useResult(n, node);
     }

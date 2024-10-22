@@ -3,14 +3,13 @@
 void setupTest() {
 }
 
-
 TestContext::TestContext(const char* source) : ctx(nullptr), tokenSet(nullptr), src(nullptr), tokenizedSrc(nullptr) {
     tokenSet = new tokenize::TokenSet();
     parse::setupTokenSet(tokenSet);
 
     src = new tokenize::Resource(source, 1);
     tokenizedSrc = src->tokenize(tokenSet);
-    ctx = new parse::Context(tokenizedSrc);
+    ctx = new Context(tokenizedSrc);
 }
 
 TestContext::~TestContext() {

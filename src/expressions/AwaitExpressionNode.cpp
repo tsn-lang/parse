@@ -13,6 +13,8 @@ namespace parse {
         }
 
         AwaitExpressionNode* n = Create(ctx);
+        ctx->consume(n);
+        
         n->expr = BinaryExpressionNode::TryParseAssignmentOperatorExpression(ctx);
 
         if (!n->expr) {

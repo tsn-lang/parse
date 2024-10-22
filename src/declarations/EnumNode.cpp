@@ -5,7 +5,7 @@
 #include <utils/Array.hpp>
 
 namespace parse {
-    EnumNode::EnumNode(Context* ctx) : Node(ctx, NodeType::EnumNode) {}
+    EnumNode::EnumNode(Context* ctx) : Node(ctx, NodeType::EnumNode), isDeclaration(false) {}
     EnumNode::~EnumNode() {}
     void EnumNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     EnumNode* EnumNode::Create(Context* ctx) { return new (ctx->allocNode()) EnumNode(ctx); }
@@ -26,6 +26,12 @@ namespace parse {
         n->name = nameTok->toString();
         n->extendLocation(nameTok);
         ctx->consume();
+
+        if (ctx->match(TokenType::EndOfStatement)) {
+            ctx->consume(n);
+            n->isDeclaration = true;
+            return n;
+        }
 
         if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_OpenBrace)) {
             ctx->logError("Expected '{'");

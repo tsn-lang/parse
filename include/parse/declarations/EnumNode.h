@@ -14,6 +14,7 @@ namespace parse {
             static EnumNode* TryParse(Context* ctx);
 
             String name;
+            bool isDeclaration;
             Array<EnumFieldNode*> fields;
             
         private:

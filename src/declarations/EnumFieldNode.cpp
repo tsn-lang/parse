@@ -10,7 +10,7 @@ namespace parse {
     EnumFieldNode* EnumFieldNode::Create(Context* ctx) { return new (ctx->allocNode()) EnumFieldNode(ctx); }
 
     EnumFieldNode* EnumFieldNode::TryParse(Context* ctx) {
-        if (ctx->match(TokenType::Identifier)) return nullptr;
+        if (!ctx->match(TokenType::Identifier)) return nullptr;
 
         EnumFieldNode* n = Create(ctx);
         

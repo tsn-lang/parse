@@ -15,22 +15,23 @@ namespace parse {
     ArrowFunctionExpressionNode* ArrowFunctionExpressionNode::TryParse(Context* ctx) {
         if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_OpenParen)) return nullptr;
 
+        ctx->begin();
+        bool didCommit = false;
+
         ArrowFunctionExpressionNode* n = Create(ctx);
 
         n->parameters = ParameterListNode::TryParse(ctx);
-        if (!n->parameters) {
-            n->m_isError = true;
-            ctx->logError("Expected parameter list");
-            if (!ctx->skipToAnyMatched({
-                Match(TokenType::Symbol, TokenSubType::Symbol_Arrow),
-                Match(TokenType::Symbol, TokenSubType::Symbol_Colon)
-            })) return n;
+        if (!n->parameters || n->parameters->isError()) {
+            ctx->rollback();
+            n->destroy();
+            return nullptr;
         } else {
-            n->m_isError = n->parameters->isError();
             n->extendLocation(n->parameters);
         }
 
         if (ctx->match(TokenType::Symbol, TokenSubType::Symbol_Colon)) {
+            didCommit = true;
+            ctx->commit();
             ctx->consume(n);
 
             n->returnType = TypeSpecifierNode::TryParse(ctx);
@@ -39,6 +40,21 @@ namespace parse {
                 return n;
             }
         }
+
+        if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_Arrow)) {
+            if (didCommit) {
+                ctx->logError("Expected '=>'");
+                n->m_isError = true;
+                if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_OpenBrace)) return n;
+            } else {
+                ctx->rollback();
+                n->destroy();
+                return nullptr;
+            }
+        }
+
+        if (!didCommit) ctx->commit();
+        ctx->consume(n);
 
         if (ctx->match(TokenType::Symbol, TokenSubType::Symbol_OpenBrace)) {
             n->body = StatementBlockNode::TryParse(ctx);

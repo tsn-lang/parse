@@ -152,6 +152,7 @@ namespace parse {
         ts->addStringToken(",",               TokenType::Symbol,  i32(TokenSubType::Symbol_Comma          ));
         ts->addStringToken(":",               TokenType::Symbol,  i32(TokenSubType::Symbol_Colon          ));
         ts->addStringToken(".",               TokenType::Symbol,  i32(TokenSubType::Symbol_Dot            ));
+        ts->addStringToken("?",               TokenType::Symbol,  i32(TokenSubType::Symbol_QuestionMark   ));
         ts->addStringToken("=>",              TokenType::Symbol,  i32(TokenSubType::Symbol_Arrow          ));
         ts->addStringToken("=",               TokenType::Symbol,  i32(TokenSubType::Symbol_Equal          ));
         ts->addStringToken("+",               TokenType::Symbol,  i32(TokenSubType::Operator_Add          ));

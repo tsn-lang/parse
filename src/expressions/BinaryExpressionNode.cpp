@@ -136,7 +136,7 @@ namespace parse {
         Node* expr = TryParseBitShiftExpression(ctx);
         if (!expr) return nullptr;
 
-        if (!ctx->matchAll({
+        if (!ctx->matchAny({
             Match(TokenType::Symbol, TokenSubType::Operator_LessThan),
             Match(TokenType::Symbol, TokenSubType::Operator_GreaterThan),
             Match(TokenType::Symbol, TokenSubType::Operator_LessThanEq),

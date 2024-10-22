@@ -11,12 +11,9 @@ namespace parse {
     IdentifierNode* IdentifierNode::TryParse(Context* ctx) {
         if (!ctx->match(TokenType::Identifier)) return nullptr;
 
-        const Token* tok = ctx->get();
-        ctx->consume();
-
         IdentifierNode* n = Create(ctx);
-        n->extendLocation(tok);
-        n->text = tok->toString();
+        n->text = ctx->get()->toString();
+        ctx->consume(n);
         
         return n;
     }

@@ -40,7 +40,24 @@ namespace parse {
         if (!base || ctx->atEnd()) return nullptr;
 
         ExpressionSequenceNode* args = ExpressionSequenceNode::TryParseParenthesized(ctx);
-        if (!args) return nullptr;
+        if (!args) {
+            if (ctx->matchAll({
+                Match(TokenType::Symbol, TokenSubType::Symbol_OpenParen),
+                Match(TokenType::Symbol, TokenSubType::Symbol_CloseParen)
+            })) {
+                CallExpressionNode* n = Create(ctx);
+                n->callee = base;
+                n->m_isError = base->isError();
+                n->extendLocation(n->callee);
+
+                n->arguments = nullptr;
+                ctx->consume(n);
+                ctx->consume(n);
+                return n;
+            }
+
+            return nullptr;
+        }
 
         CallExpressionNode* n = Create(ctx);
         n->callee = base;
