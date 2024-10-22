@@ -77,7 +77,10 @@ namespace parse {
             ctx->logError("Expected 'from'");
             n->m_isError = true;
 
-            ctx->skipTo(TokenType::EndOfStatement);
+            if (ctx->skipTo(TokenType::EndOfStatement)) {
+                ctx->consume(n);
+            }
+
             return n;
         }
 
@@ -86,10 +89,23 @@ namespace parse {
         if (!ctx->match(TokenType::Literal, TokenSubType::Literal_String)) {
             ctx->logError("Expected string");
             n->m_isError = true;
+            
+            if (ctx->skipTo(TokenType::EndOfStatement)) {
+                ctx->consume(n);
+            }
+
             return n;
         }
 
         n->moduleId = ctx->get()->getContentString();
+        ctx->consume(n);
+
+        if (!ctx->match(TokenType::EndOfStatement)) {
+            ctx->logError("Expected ';'");
+            n->m_isError = true;
+            return n;
+        }
+
         ctx->consume(n);
 
         return n;

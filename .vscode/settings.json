@@ -48,7 +48,8 @@
         "xutility": "cpp",
         "*.inc": "cpp",
         "functional": "cpp",
-        "xlocmon": "cpp"
+        "xlocmon": "cpp",
+        "regex": "cpp"
     },
     "cmake.debugConfig": {
         "externalConsole": false,

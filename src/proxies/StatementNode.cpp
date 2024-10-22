@@ -80,8 +80,8 @@ namespace parse {
         if (delStmt) {
             StatementNode* n = Create(ctx);
             n->stmt = delStmt;
-            n->m_isError = delStmt->isError();
-            n->extendLocation(delStmt);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             if (!ctx->match(TokenType::EndOfStatement)) {
                 ctx->logError("Expected ';'");
@@ -98,8 +98,8 @@ namespace parse {
         if (retStmt) {
             StatementNode* n = Create(ctx);
             n->stmt = retStmt;
-            n->m_isError = retStmt->isError();
-            n->extendLocation(retStmt);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             if (!ctx->match(TokenType::EndOfStatement)) {
                 ctx->logError("Expected ';'");
@@ -116,8 +116,8 @@ namespace parse {
         if (throwStmt) {
             StatementNode* n = Create(ctx);
             n->stmt = throwStmt;
-            n->m_isError = throwStmt->isError();
-            n->extendLocation(throwStmt);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             if (!ctx->match(TokenType::EndOfStatement)) {
                 ctx->logError("Expected ';'");
@@ -134,8 +134,8 @@ namespace parse {
         if (declStmt) {
             StatementNode* n = Create(ctx);
             n->stmt = declStmt;
-            n->m_isError = declStmt->isError();
-            n->extendLocation(declStmt);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             if (!ctx->match(TokenType::EndOfStatement)) {
                 ctx->logError("Expected ';'");
@@ -152,8 +152,8 @@ namespace parse {
         if (exprStmt) {
             StatementNode* n = Create(ctx);
             n->stmt = exprStmt;
-            n->m_isError = exprStmt->isError();
-            n->extendLocation(exprStmt);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             if (!ctx->match(TokenType::EndOfStatement)) {
                 ctx->logError("Expected ';'");
@@ -170,8 +170,8 @@ namespace parse {
         if (ifStmt) {
             StatementNode* n = Create(ctx);
             n->stmt = ifStmt;
-            n->m_isError = ifStmt->isError();
-            n->extendLocation(ifStmt);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             return n;
         }
@@ -180,8 +180,8 @@ namespace parse {
         if (forLoop) {
             StatementNode* n = Create(ctx);
             n->stmt = forLoop;
-            n->m_isError = forLoop->isError();
-            n->extendLocation(forLoop);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             return n;
         }
@@ -190,8 +190,8 @@ namespace parse {
         if (switchStmt) {
             StatementNode* n = Create(ctx);
             n->stmt = switchStmt;
-            n->m_isError = switchStmt->isError();
-            n->extendLocation(switchStmt);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             return n;
         }
@@ -200,8 +200,8 @@ namespace parse {
         if (whileLoop) {
             StatementNode* n = Create(ctx);
             n->stmt = whileLoop;
-            n->m_isError = whileLoop->isError();
-            n->extendLocation(whileLoop);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             return n;
         }
@@ -210,8 +210,8 @@ namespace parse {
         if (doWhileLoop) {
             StatementNode* n = Create(ctx);
             n->stmt = doWhileLoop;
-            n->m_isError = doWhileLoop->isError();
-            n->extendLocation(doWhileLoop);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             return n;
         }
@@ -220,8 +220,8 @@ namespace parse {
         if (tryCatchStmt) {
             StatementNode* n = Create(ctx);
             n->stmt = tryCatchStmt;
-            n->m_isError = tryCatchStmt->isError();
-            n->extendLocation(tryCatchStmt);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             return n;
         }
@@ -230,8 +230,8 @@ namespace parse {
         if (blockStmt) {
             StatementNode* n = Create(ctx);
             n->stmt = blockStmt;
-            n->m_isError = blockStmt->isError();
-            n->extendLocation(blockStmt);
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
 
             return n;
         }

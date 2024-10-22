@@ -30,7 +30,6 @@ namespace parse {
         ctx->consume(n);
 
         Node* assignable = n->assignable = IdentifierNode::TryParse(ctx);
-        
         if (!assignable) {
             assignable = n->typedAssignable = TypedAssignableNode::TryParse(ctx);
         }
@@ -105,6 +104,8 @@ namespace parse {
             n->m_isError = true;
             return n;
         }
+
+        n->extendLocation(n->initializer);
 
         return n;
     }

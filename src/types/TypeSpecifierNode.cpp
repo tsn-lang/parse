@@ -24,24 +24,28 @@ namespace parse {
 
         n->type = IdentifierTypeSpecifierNode::TryParse(ctx);
         if (n->type) {
+            ctx->commit();
             n->extendLocation(n->type);
             return n;
         }
 
         n->type = ObjectTypeNode::TryParse(ctx);
         if (n->type) {
+            ctx->commit();
             n->extendLocation(n->type);
             return n;
         }
 
         n->type = ArrayTypeNode::TryParse(ctx);
         if (n->type) {
+            ctx->commit();
             n->extendLocation(n->type);
             return n;
         }
 
         n->type = FunctionTypeNode::TryParse(ctx);
         if (n->type) {
+            ctx->commit();
             n->extendLocation(n->type);
             return n;
         }

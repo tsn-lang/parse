@@ -18,41 +18,31 @@ namespace parse {
         ctx->consume(n);
 
         n->exportable = IdentifierNode::TryParse(ctx);
-        if (n->exportable) {
-            n->extendLocation(n->exportable);
-            return n;
-        }
-
-        n->exportable = ClassNode::TryParse(ctx);
-        if (n->exportable) {
-            n->extendLocation(n->exportable);
-            return n;
-        }
+        if (!n->exportable) n->exportable = ClassNode::TryParse(ctx);
+        if (!n->exportable) n->exportable = FunctionNode::TryParse(ctx);
+        if (!n->exportable) n->exportable = TypeNode::TryParse(ctx);
+        if (!n->exportable) n->exportable = DeclarationStatementNode::TryParse(ctx);
         
-        n->exportable = FunctionNode::TryParse(ctx);
-        if (n->exportable) {
-            n->extendLocation(n->exportable);
-            return n;
-        }
-
-        n->exportable = TypeNode::TryParse(ctx);
-        if (n->exportable) {
-            n->extendLocation(n->exportable);
-            return n;
-        }
-
-        n->exportable = DeclarationStatementNode::TryParse(ctx);
-        if (n->exportable) {
-            n->extendLocation(n->exportable);
-            return n;
-        }
-
         if (!n->exportable) {
             ctx->logError("Expected valid exportable entity");
+            n->m_isError = true;
+
+            if (ctx->skipTo(TokenType::EndOfStatement)) {
+                ctx->consume(n);
+            }
+
+            return n;
+        }
+
+        n->extendLocation(n->exportable);
+
+        if (!ctx->match(TokenType::EndOfStatement)) {
+            ctx->logError("Expected ';'");
             n->m_isError = true;
             return n;
         }
 
+        ctx->consume(n);
         return n;
     }
 };

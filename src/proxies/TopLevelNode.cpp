@@ -26,72 +26,72 @@ namespace parse {
         FunctionNode* fdecl = FunctionNode::TryParse(ctx);
         if (fdecl) {
             TopLevelNode* tl = Create(ctx);
-            tl->m_isError = fdecl->isError();
             tl->statement = fdecl;
-            tl->extendLocation(fdecl);
+            tl->m_isError = tl->statement->isError();
+            tl->m_location = tl->statement->getLocation();
             return tl;
         }
 
         ClassNode* cdecl_ = ClassNode::TryParse(ctx);
         if (cdecl_) {
             TopLevelNode* tl = Create(ctx);
-            tl->m_isError = cdecl_->isError();
             tl->statement = cdecl_;
-            tl->extendLocation(cdecl_);
+            tl->m_isError = tl->statement->isError();
+            tl->m_location = tl->statement->getLocation();
             return tl;
         }
 
         TypeNode* tdecl = TypeNode::TryParse(ctx);
         if (tdecl) {
             TopLevelNode* tl = Create(ctx);
-            tl->m_isError = tdecl->isError();
             tl->statement = tdecl;
-            tl->extendLocation(tdecl);
+            tl->m_isError = tl->statement->isError();
+            tl->m_location = tl->statement->getLocation();
             return tl;
         }
         
         EnumNode* edecl = EnumNode::TryParse(ctx);
         if (edecl) {
             TopLevelNode* tl = Create(ctx);
-            tl->m_isError = edecl->isError();
             tl->statement = edecl;
-            tl->extendLocation(edecl);
+            tl->m_isError = tl->statement->isError();
+            tl->m_location = tl->statement->getLocation();
             return tl;
         }
 
         ExportStatementNode* exportStmt = ExportStatementNode::TryParse(ctx);
         if (exportStmt) {
             TopLevelNode* tl = Create(ctx);
-            tl->m_isError = exportStmt->isError();
             tl->statement = exportStmt;
-            tl->extendLocation(exportStmt);
+            tl->m_isError = tl->statement->isError();
+            tl->m_location = tl->statement->getLocation();
             return tl;
         }
 
         ImportAllStatementNode* importAll = ImportAllStatementNode::TryParse(ctx);
         if (importAll) {
             TopLevelNode* tl = Create(ctx);
-            tl->m_isError = importAll->isError();
             tl->statement = importAll;
-            tl->extendLocation(importAll);
+            tl->m_isError = tl->statement->isError();
+            tl->m_location = tl->statement->getLocation();
             return tl;
         }
 
         ImportSelectStatementNode* importSelect = ImportSelectStatementNode::TryParse(ctx);
         if (importSelect) {
             TopLevelNode* tl = Create(ctx);
-            tl->m_isError = importSelect->isError();
             tl->statement = importSelect;
-            tl->extendLocation(importSelect);
+            tl->m_isError = tl->statement->isError();
+            tl->m_location = tl->statement->getLocation();
             return tl;
         }
 
         StatementNode* stmt = StatementNode::TryParse(ctx);
         if (stmt) {
             TopLevelNode* tl = Create(ctx);
-            tl->m_isError = stmt->isError();
             tl->statement = stmt;
-            tl->extendLocation(stmt);
+            tl->m_isError = tl->statement->isError();
+            tl->m_location = tl->statement->getLocation();
             return tl;
         }
 

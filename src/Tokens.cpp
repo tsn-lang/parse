@@ -102,7 +102,7 @@ namespace parse {
         // negative sign will be parsed separately
         #define FLOAT_REGEX "\\d+(?:(?:(?:\\.\\d*)?(?:[eE][+\\-]?\\d+))|(?:\\.\\d*))"
         #define INT_REGEX "(?:0[xX][0-9a-fA-F]+)|(?:0[bB][01]+)|(?:-?\\d+)"
-        #define IDENTIFIER_REGEX "([a-zA-Z_]+)\\w*"
+        #define IDENTIFIER_REGEX "(?:[a-zA-Z_]+)\\w*"
         #define STRING_REGEX "'(?:[^'\\\\]|\\\\.)*'"
 
         ts->addStringToken("as",              TokenType::Keyword, i32(TokenSubType::Keyword_As            ));

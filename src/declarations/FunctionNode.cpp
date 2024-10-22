@@ -82,7 +82,7 @@ namespace parse {
         }
 
         if (ctx->match(TokenType::EndOfStatement)) {
-            ctx->consume();
+            ctx->consume(n);
             return n;
         }
 
