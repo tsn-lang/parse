@@ -4,7 +4,12 @@
 #include <parse/literals/NumberLiteralNode.h>
 #include <parse/literals/StringLiteralNode.h>
 #include <parse/literals/TemplateStringLiteralNode.h>
+#include <parse/literals/ArrayLiteralNode.h>
+#include <parse/literals/ObjectLiteralNode.h>
+#include <parse/literals/ObjectLiteralPropertyNode.h>
 #include <parse/proxies/ExpressionNode.h>
+#include <parse/expressions/ExpressionSequenceNode.h>
+#include <utils/Array.hpp>
 
 using namespace tokenize;
 using namespace parse; 
@@ -30,7 +35,9 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         TestContext test("null");
         Node* n1 = ExpressionNode::TryParsePrimaryExpression(test.ctx);
         REQUIRE(n1 != nullptr);
+        REQUIRE(n1->isError() == false);
         REQUIRE(n1->getType() == NodeType::NullLiteralNode);
+        REQUIRE(test.ctx->getState()->messages.size() == 0);
     }
     
     SECTION("Number literals") {
@@ -39,6 +46,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == false);
         REQUIRE(n->isSigned == false);
@@ -47,6 +55,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == false);
         REQUIRE(n->isSigned == false);
@@ -55,6 +64,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == false);
         REQUIRE(n->isSigned == false);
@@ -63,6 +73,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == false);
         REQUIRE(n->isSigned == false);
@@ -71,6 +82,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == false);
         REQUIRE(n->isSigned == true);
@@ -79,6 +91,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == false);
         REQUIRE(n->isSigned == true);
@@ -87,6 +100,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == false);
         REQUIRE(n->isSigned == true);
@@ -95,6 +109,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == false);
         REQUIRE(n->isSigned == true);
@@ -111,6 +126,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == true);
         REQUIRE(n->isSigned == true);
@@ -119,6 +135,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == false);
         REQUIRE(n->isSigned == true);
@@ -127,11 +144,14 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = NumberLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::NumberLiteralNode);
         REQUIRE(n->isFloat == true);
         REQUIRE(n->isSigned == true);
         REQUIRE(n->storageSize == 8);
         REQUIRE(n->value.d == 12.0);
+
+        REQUIRE(test.ctx->getState()->messages.size() == 0);
     }
 
     SECTION("String literals") {
@@ -140,8 +160,10 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         
         n = StringLiteralNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->getType() == NodeType::StringLiteralNode);
         REQUIRE(n->value == "test 'string'\n");
+        REQUIRE(test.ctx->getState()->messages.size() == 0);
     }
 
     SECTION("Template string literals") {
@@ -154,6 +176,7 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         SourceLocation loc;
 
         REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
         REQUIRE(n->segments.size() == 6);
 
         REQUIRE(n->segments[0].expr == nullptr);
@@ -194,5 +217,70 @@ TEST_CASE("Test Literal Nodes", "[parse]") {
         REQUIRE(nl->value.s == 123);
         REQUIRE(nl->getLocation().startBufferPosition == 29);
         REQUIRE(nl->getLocation().endBufferPosition == 32);
+
+        REQUIRE(test.ctx->getState()->messages.size() == 0);
+    }
+
+    SECTION("Array literals") {
+        TestContext test0("[]");
+        ArrayLiteralNode* n = nullptr;
+        
+        n = ArrayLiteralNode::TryParse(test0.ctx);
+        REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
+        REQUIRE(n->elements == nullptr);
+        REQUIRE(test0.ctx->getState()->messages.size() == 0);
+        
+        TestContext test1("[1, 2]");
+        n = ArrayLiteralNode::TryParse(test1.ctx);
+        REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
+        REQUIRE(n->elements != nullptr);
+        REQUIRE(n->elements->expressions.size() == 2);
+
+        REQUIRE(n->elements->expressions[0] != nullptr);
+        REQUIRE(n->elements->expressions[0]->expr != nullptr);
+        REQUIRE(n->elements->expressions[0]->expr->getType() == NodeType::NumberLiteralNode);
+        REQUIRE(((NumberLiteralNode*)n->elements->expressions[0]->expr)->value.s == 1);
+
+        REQUIRE(n->elements->expressions[1] != nullptr);
+        REQUIRE(n->elements->expressions[1]->expr != nullptr);
+        REQUIRE(n->elements->expressions[1]->expr->getType() == NodeType::NumberLiteralNode);
+        REQUIRE(((NumberLiteralNode*)n->elements->expressions[1]->expr)->value.s == 2);
+
+        REQUIRE(test1.ctx->getState()->messages.size() == 0);
+    }
+
+    SECTION("Object literals") {
+        TestContext test0("{}");
+        ObjectLiteralNode* n = nullptr;
+        
+        n = ObjectLiteralNode::TryParse(test0.ctx);
+        REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
+        REQUIRE(n->properties.size() == 0);
+        REQUIRE(test0.ctx->getState()->messages.size() == 0);
+        
+        TestContext test1("{ a: 1, b: 2 }");
+        n = ObjectLiteralNode::TryParse(test1.ctx);
+        REQUIRE(n != nullptr);
+        REQUIRE(n->isError() == false);
+        REQUIRE(n->properties.size() == 2);
+        
+        REQUIRE(n->properties[0] != nullptr);
+        REQUIRE(n->properties[0]->name == "a");
+        REQUIRE(n->properties[0]->value != nullptr);
+        REQUIRE(n->properties[0]->value->getType() == NodeType::ExpressionNode);
+        REQUIRE(((ExpressionNode*)n->properties[0]->value)->expr != nullptr);
+        REQUIRE(((NumberLiteralNode*)((ExpressionNode*)n->properties[0]->value)->expr)->value.s == 1);
+
+        REQUIRE(n->properties[1] != nullptr);
+        REQUIRE(n->properties[1]->name == "b");
+        REQUIRE(n->properties[1]->value != nullptr);
+        REQUIRE(n->properties[1]->value->getType() == NodeType::ExpressionNode);
+        REQUIRE(((ExpressionNode*)n->properties[1]->value)->expr != nullptr);
+        REQUIRE(((NumberLiteralNode*)((ExpressionNode*)n->properties[1]->value)->expr)->value.s == 2);
+
+        REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }
 }

@@ -57,16 +57,9 @@ namespace parse {
             }
             return n;
         }
-
-        n->moduleId = ctx->get()->getContentString();
-        ctx->consume(n);
-
-        if (!ctx->match(TokenType::EndOfStatement)) {
-            ctx->logError("Expected ';'");
-            n->m_isError = true;
-            return n;
-        }
-
+        
+        String id = ctx->get()->toString();
+        n->moduleId = String::View(id.c_str() + 1, id.size() - 2);
         ctx->consume(n);
 
         return n;

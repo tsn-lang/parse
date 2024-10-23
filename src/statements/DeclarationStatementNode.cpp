@@ -29,9 +29,15 @@ namespace parse {
 
         ctx->consume(n);
 
-        Node* assignable = n->assignable = IdentifierNode::TryParse(ctx);
-        if (!assignable) {
+        Node* assignable = nullptr;
+
+        if (ctx->matchAll({
+            Match(TokenType::Identifier),
+            Match(TokenType::Symbol, TokenSubType::Symbol_Colon)
+        })) {
             assignable = n->typedAssignable = TypedAssignableNode::TryParse(ctx);
+        } else {
+            assignable = n->assignable = IdentifierNode::TryParse(ctx);
         }
 
         if (!assignable) {
@@ -82,6 +88,8 @@ namespace parse {
                     })) {
                         return n;
                     }
+                } else {
+                    ctx->consume(n);
                 }
             }
         } else {

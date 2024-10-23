@@ -3,6 +3,7 @@
 #include <tokenize/Token.h>
 
 namespace parse {
+    void INodeVisitor::visit(ArrayLiteralNode* node) {}
     void INodeVisitor::visit(ArrayTypeNode* node) {}
     void INodeVisitor::visit(ArrowFunctionExpressionNode* node) {}
     void INodeVisitor::visit(AwaitExpressionNode* node) {}
@@ -47,6 +48,8 @@ namespace parse {
     void INodeVisitor::visit(NewExpressionNode* node) {}
     void INodeVisitor::visit(NullLiteralNode* node) {}
     void INodeVisitor::visit(NumberLiteralNode* node) {}
+    void INodeVisitor::visit(ObjectLiteralNode* node) {}
+    void INodeVisitor::visit(ObjectLiteralPropertyNode* node) {}
     void INodeVisitor::visit(ObjectTypeNode* node) {}
     void INodeVisitor::visit(ParameterListNode* node) {}
     void INodeVisitor::visit(ReturnStatementNode* node) {}

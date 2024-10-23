@@ -31,9 +31,12 @@
 #include <parse/expressions/ThisExpressionNode.h>
 #include <parse/expressions/TypeInfoExpressionNode.h>
 #include <parse/expressions/UnaryExpressionNode.h>
+#include <parse/literals/ArrayLiteralNode.h>
 #include <parse/literals/BooleanLiteralNode.h>
 #include <parse/literals/NullLiteralNode.h>
 #include <parse/literals/NumberLiteralNode.h>
+#include <parse/literals/ObjectLiteralNode.h>
+#include <parse/literals/ObjectLiteralPropertyNode.h>
 #include <parse/literals/StringLiteralNode.h>
 #include <parse/literals/TemplateStringLiteralNode.h>
 #include <parse/misc/IdentifierNode.h>
@@ -61,7 +64,6 @@
 #include <parse/statements/ImportSelectStatementNode.h>
 #include <parse/statements/ReturnStatementNode.h>
 #include <parse/statements/StatementBlockNode.h>
-#include <parse/statements/StatementBlockNode.h>
 #include <parse/statements/SwitchCaseNode.h>
 #include <parse/statements/SwitchStatementNode.h>
 #include <parse/statements/ThrowStatementNode.h>
@@ -85,7 +87,7 @@ namespace parse {
         u32 maxSize = 0;
 
         #define N(name) if (sizeof(name) > maxSize) maxSize = sizeof(name)
-
+        N(ArrayLiteralNode);
         N(ArrayTypeNode);
         N(ArrowFunctionExpressionNode);
         N(AwaitExpressionNode);
@@ -131,6 +133,8 @@ namespace parse {
         N(Node);
         N(NullLiteralNode);
         N(NumberLiteralNode);
+        N(ObjectLiteralNode);
+        N(ObjectLiteralPropertyNode);
         N(ObjectTypeNode);
         N(ParameterListNode);
         N(ReturnStatementNode);

@@ -25,6 +25,7 @@ namespace parse {
                 }
             }
             
+            virtual void visit(ArrayLiteralNode* node);
             virtual void visit(ArrayTypeNode* node);
             virtual void visit(ArrowFunctionExpressionNode* node);
             virtual void visit(AwaitExpressionNode* node);
@@ -69,6 +70,8 @@ namespace parse {
             virtual void visit(NewExpressionNode* node);
             virtual void visit(NullLiteralNode* node);
             virtual void visit(NumberLiteralNode* node);
+            virtual void visit(ObjectLiteralNode* node);
+            virtual void visit(ObjectLiteralPropertyNode* node);
             virtual void visit(ObjectTypeNode* node);
             virtual void visit(ReturnStatementNode* node);
             virtual void visit(SizeOfExpressionNode* node);

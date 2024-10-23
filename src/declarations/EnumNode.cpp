@@ -27,8 +27,7 @@ namespace parse {
         n->extendLocation(nameTok);
         ctx->consume();
 
-        if (ctx->match(TokenType::EndOfStatement)) {
-            ctx->consume(n);
+        if (ctx->match(TokenType::EndOfStatement) || ctx->atEnd()) {
             n->isDeclaration = true;
             return n;
         }

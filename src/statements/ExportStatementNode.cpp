@@ -2,6 +2,7 @@
 #include <parse/declarations/ClassNode.h>
 #include <parse/declarations/FunctionNode.h>
 #include <parse/declarations/TypeNode.h>
+#include <parse/declarations/EnumNode.h>
 #include <parse/statements/DeclarationStatementNode.h>
 #include <parse/misc/IdentifierNode.h>
 #include <parse/Context.h>
@@ -21,6 +22,7 @@ namespace parse {
         if (!n->exportable) n->exportable = ClassNode::TryParse(ctx);
         if (!n->exportable) n->exportable = FunctionNode::TryParse(ctx);
         if (!n->exportable) n->exportable = TypeNode::TryParse(ctx);
+        if (!n->exportable) n->exportable = EnumNode::TryParse(ctx);
         if (!n->exportable) n->exportable = DeclarationStatementNode::TryParse(ctx);
         
         if (!n->exportable) {
@@ -35,14 +37,6 @@ namespace parse {
         }
 
         n->extendLocation(n->exportable);
-
-        if (!ctx->match(TokenType::EndOfStatement)) {
-            ctx->logError("Expected ';'");
-            n->m_isError = true;
-            return n;
-        }
-
-        ctx->consume(n);
         return n;
     }
 };

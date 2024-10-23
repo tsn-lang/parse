@@ -41,7 +41,8 @@ namespace parse {
         if (ctx->matchAny({
             Match(TokenType::Keyword, TokenSubType::Keyword_Case),
             Match(TokenType::Keyword, TokenSubType::Keyword_Default),
-            Match(TokenType::Symbol, TokenSubType::Symbol_CloseBrace)
+            Match(TokenType::Symbol, TokenSubType::Symbol_CloseBrace),
+            Match(TokenType::EndOfInput)
         })) {
             // Valid next tokens if this case has no body, this will save some time
             // rather than trying to parse a statement

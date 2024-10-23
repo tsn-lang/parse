@@ -7,6 +7,7 @@ namespace parse {
 
     enum class NodeType {
         Node = 0,
+        ArrayLiteralNode,
         ArrayTypeNode,
         ArrowFunctionExpressionNode,
         AwaitExpressionNode,
@@ -51,6 +52,8 @@ namespace parse {
         NewExpressionNode,
         NullLiteralNode,
         NumberLiteralNode,
+        ObjectLiteralNode,
+        ObjectLiteralPropertyNode,
         ObjectTypeNode,
         ParameterListNode,
         ReturnStatementNode,

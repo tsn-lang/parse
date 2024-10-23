@@ -37,8 +37,7 @@ namespace parse {
             }
         }
 
-        if (ctx->match(TokenType::EndOfStatement)) {
-            ctx->consume(n);
+        if (ctx->match(TokenType::EndOfStatement) || ctx->atEnd()) {
             return n;
         }
 

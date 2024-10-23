@@ -4,9 +4,11 @@
 #include <parse/expressions/TypeInfoExpressionNode.h>
 #include <parse/expressions/SizeOfExpressionNode.h>
 #include <parse/expressions/ExpressionSequenceNode.h>
+#include <parse/literals/ArrayLiteralNode.h>
 #include <parse/literals/BooleanLiteralNode.h>
 #include <parse/literals/NullLiteralNode.h>
 #include <parse/literals/NumberLiteralNode.h>
+#include <parse/literals/ObjectLiteralNode.h>
 #include <parse/literals/StringLiteralNode.h>
 #include <parse/literals/TemplateStringLiteralNode.h>
 #include <parse/types/IdentifierTypeSpecifierNode.h>
@@ -100,7 +102,6 @@ namespace parse {
                 return es;
             }
 
-            ctx->rollback();
             return nullptr;
         }
 
@@ -115,6 +116,12 @@ namespace parse {
             ctx->consume(n);
             return n;
         }
+
+        ArrayLiteralNode* al = ArrayLiteralNode::TryParse(ctx);
+        if (al) return al;
+
+        ObjectLiteralNode* ol = ObjectLiteralNode::TryParse(ctx);
+        if (ol) return ol;
 
         BooleanLiteralNode* bl = BooleanLiteralNode::TryParse(ctx);
         if (bl) return bl;

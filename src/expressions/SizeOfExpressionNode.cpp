@@ -35,8 +35,9 @@ namespace parse {
             n->m_isError = true;
             ctx->logError("Expected '>'");
             return n;
-        } 
+        }
 
+        ctx->consume(n);
         return n;
     }
 };

@@ -30,9 +30,12 @@
 #include <parse/expressions/ThisExpressionNode.h>
 #include <parse/expressions/TypeInfoExpressionNode.h>
 #include <parse/expressions/UnaryExpressionNode.h>
+#include <parse/literals/ArrayLiteralNode.h>
 #include <parse/literals/BooleanLiteralNode.h>
 #include <parse/literals/NullLiteralNode.h>
 #include <parse/literals/NumberLiteralNode.h>
+#include <parse/literals/ObjectLiteralNode.h>
+#include <parse/literals/ObjectLiteralPropertyNode.h>
 #include <parse/literals/StringLiteralNode.h>
 #include <parse/literals/TemplateStringLiteralNode.h>
 #include <parse/misc/IdentifierNode.h>
@@ -90,6 +93,14 @@ namespace parse {
         resultNode->m_isError = sourceNode->m_isError;
         offsetSourceLocation(resultNode->m_location);
         result = resultNode;
+    }
+
+    void NodeCopy::visit(ArrayLiteralNode* node) {
+        ArrayLiteralNode* n = ArrayLiteralNode::Create(m_ctx);
+
+        n->elements = copyChildNode(node->elements);
+
+        useResult(n, node);
     }
 
     void NodeCopy::visit(ArrayTypeNode* node) {
@@ -513,6 +524,23 @@ namespace parse {
         n->isSigned = node->isSigned;
         n->isFloat = node->isFloat;
         n->value = node->value;
+
+        useResult(n, node);
+    }
+
+    void NodeCopy::visit(ObjectLiteralNode* node) {
+        ObjectLiteralNode* n = ObjectLiteralNode::Create(m_ctx);
+
+        copyChildNodeArray(node->properties, n->properties);
+
+        useResult(n, node);
+    }
+
+    void NodeCopy::visit(ObjectLiteralPropertyNode* node) {
+        ObjectLiteralPropertyNode* n = ObjectLiteralPropertyNode::Create(m_ctx);
+
+        n->name = node->name;
+        n->value = copyChildNode(node->value);
 
         useResult(n, node);
     }

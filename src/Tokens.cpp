@@ -108,11 +108,13 @@ namespace parse {
         ts->addStringToken("as",              TokenType::Keyword, i32(TokenSubType::Keyword_As            ));
         ts->addStringToken("async",           TokenType::Keyword, i32(TokenSubType::Keyword_Async         ));
         ts->addStringToken("await",           TokenType::Keyword, i32(TokenSubType::Keyword_Await         ));
+        ts->addStringToken("break",           TokenType::Keyword, i32(TokenSubType::Keyword_Break         ));
         ts->addStringToken("case",            TokenType::Keyword, i32(TokenSubType::Keyword_Case          ));
         ts->addStringToken("catch",           TokenType::Keyword, i32(TokenSubType::Keyword_Catch         ));
         ts->addStringToken("class",           TokenType::Keyword, i32(TokenSubType::Keyword_Class         ));
         ts->addStringToken("const",           TokenType::Keyword, i32(TokenSubType::Keyword_Const         ));
         ts->addStringToken("constructor",     TokenType::Keyword, i32(TokenSubType::Keyword_Constructor   ));
+        ts->addStringToken("continue",        TokenType::Keyword, i32(TokenSubType::Keyword_Continue      ));
         ts->addStringToken("default",         TokenType::Keyword, i32(TokenSubType::Keyword_Default       ));
         ts->addStringToken("delete",          TokenType::Keyword, i32(TokenSubType::Keyword_Delete        ));
         ts->addStringToken("destructor",      TokenType::Keyword, i32(TokenSubType::Keyword_Destructor    ));

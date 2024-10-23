@@ -33,8 +33,10 @@ namespace parse {
         if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_CloseParen)) {
             ctx->logError("Expected ')'");
             n->m_isError = true;
-            return n;
+            if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseParen)) return n;
         }
+
+        ctx->consume(n);
 
         n->body = StatementNode::TryParse(ctx);
         if (!n->body) {

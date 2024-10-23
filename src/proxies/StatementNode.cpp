@@ -148,6 +148,16 @@ namespace parse {
             return n;
         }
 
+        StatementBlockNode* blockStmt = StatementBlockNode::TryParse(ctx);
+        if (blockStmt) {
+            StatementNode* n = Create(ctx);
+            n->stmt = blockStmt;
+            n->m_isError = n->stmt->isError();
+            n->m_location = n->stmt->getLocation();
+
+            return n;
+        }
+
         ExpressionStatementNode* exprStmt = ExpressionStatementNode::TryParse(ctx);
         if (exprStmt) {
             StatementNode* n = Create(ctx);
@@ -220,16 +230,6 @@ namespace parse {
         if (tryCatchStmt) {
             StatementNode* n = Create(ctx);
             n->stmt = tryCatchStmt;
-            n->m_isError = n->stmt->isError();
-            n->m_location = n->stmt->getLocation();
-
-            return n;
-        }
-
-        StatementBlockNode* blockStmt = StatementBlockNode::TryParse(ctx);
-        if (blockStmt) {
-            StatementNode* n = Create(ctx);
-            n->stmt = blockStmt;
             n->m_isError = n->stmt->isError();
             n->m_location = n->stmt->getLocation();
 

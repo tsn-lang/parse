@@ -81,9 +81,8 @@ namespace parse {
             }
         }
 
-        if (ctx->match(TokenType::EndOfStatement)) {
+        if (ctx->match(TokenType::EndOfStatement) || ctx->atEnd()) {
             n->isDeclaration = true;
-            ctx->consume(n);
             return n;
         }
 

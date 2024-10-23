@@ -29,6 +29,16 @@ namespace parse {
             tl->statement = fdecl;
             tl->m_isError = tl->statement->isError();
             tl->m_location = tl->statement->getLocation();
+
+            if (!fdecl->body) {
+                if (!ctx->match(TokenType::EndOfStatement)) {
+                    tl->m_isError = true;
+                    ctx->logError("Expected ';'");
+                } else {
+                    ctx->consume(tl);
+                }
+            }
+
             return tl;
         }
 
@@ -38,6 +48,16 @@ namespace parse {
             tl->statement = cdecl_;
             tl->m_isError = tl->statement->isError();
             tl->m_location = tl->statement->getLocation();
+
+            if (cdecl_->isDeclaration) {
+                if (!ctx->match(TokenType::EndOfStatement)) {
+                    tl->m_isError = true;
+                    ctx->logError("Expected ';'");
+                } else {
+                    ctx->consume(tl);
+                }
+            }
+
             return tl;
         }
 
@@ -47,6 +67,16 @@ namespace parse {
             tl->statement = tdecl;
             tl->m_isError = tl->statement->isError();
             tl->m_location = tl->statement->getLocation();
+
+            if (!tdecl->type) {
+                if (!ctx->match(TokenType::EndOfStatement)) {
+                    tl->m_isError = true;
+                    ctx->logError("Expected ';'");
+                } else {
+                    ctx->consume(tl);
+                }
+            }
+
             return tl;
         }
         
@@ -56,6 +86,16 @@ namespace parse {
             tl->statement = edecl;
             tl->m_isError = tl->statement->isError();
             tl->m_location = tl->statement->getLocation();
+
+            if (edecl->isDeclaration) {
+                if (!ctx->match(TokenType::EndOfStatement)) {
+                    tl->m_isError = true;
+                    ctx->logError("Expected ';'");
+                } else {
+                    ctx->consume(tl);
+                }
+            }
+
             return tl;
         }
 
@@ -65,6 +105,14 @@ namespace parse {
             tl->statement = exportStmt;
             tl->m_isError = tl->statement->isError();
             tl->m_location = tl->statement->getLocation();
+
+            if (!ctx->match(TokenType::EndOfStatement)) {
+                tl->m_isError = true;
+                ctx->logError("Expected ';'");
+            } else {
+                ctx->consume(tl);
+            }
+
             return tl;
         }
 
@@ -74,6 +122,14 @@ namespace parse {
             tl->statement = importAll;
             tl->m_isError = tl->statement->isError();
             tl->m_location = tl->statement->getLocation();
+
+            if (!ctx->match(TokenType::EndOfStatement)) {
+                tl->m_isError = true;
+                ctx->logError("Expected ';'");
+            } else {
+                ctx->consume(tl);
+            }
+
             return tl;
         }
 
@@ -83,6 +139,14 @@ namespace parse {
             tl->statement = importSelect;
             tl->m_isError = tl->statement->isError();
             tl->m_location = tl->statement->getLocation();
+
+            if (!ctx->match(TokenType::EndOfStatement)) {
+                tl->m_isError = true;
+                ctx->logError("Expected ';'");
+            } else {
+                ctx->consume(tl);
+            }
+            
             return tl;
         }
 

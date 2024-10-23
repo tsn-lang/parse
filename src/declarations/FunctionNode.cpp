@@ -81,8 +81,7 @@ namespace parse {
             n->extendLocation(n->returnType);
         }
 
-        if (ctx->match(TokenType::EndOfStatement)) {
-            ctx->consume(n);
+        if (ctx->match(TokenType::EndOfStatement) || ctx->atEnd()) {
             return n;
         }
 

@@ -8,6 +8,7 @@ namespace tokenize {
 
 namespace parse {
     class Context;
+    class ArrayLiteralNode;
     class ArrayTypeNode;
     class ArrowFunctionExpressionNode;
     class AwaitExpressionNode;
@@ -52,6 +53,8 @@ namespace parse {
     class NewExpressionNode;
     class NullLiteralNode;
     class NumberLiteralNode;
+    class ObjectLiteralNode;
+    class ObjectLiteralPropertyNode;
     class ObjectTypeNode;
     class ParameterListNode;
     class ReturnStatementNode;
@@ -77,6 +80,7 @@ namespace parse {
 
     class INodeVisitor {
         public:
+            virtual void visit(ArrayLiteralNode* node);
             virtual void visit(ArrayTypeNode* node);
             virtual void visit(ArrowFunctionExpressionNode* node);
             virtual void visit(AwaitExpressionNode* node);
@@ -121,6 +125,8 @@ namespace parse {
             virtual void visit(NewExpressionNode* node);
             virtual void visit(NullLiteralNode* node);
             virtual void visit(NumberLiteralNode* node);
+            virtual void visit(ObjectLiteralNode* node);
+            virtual void visit(ObjectLiteralPropertyNode* node);
             virtual void visit(ObjectTypeNode* node);
             virtual void visit(ParameterListNode* node);
             virtual void visit(ReturnStatementNode* node);

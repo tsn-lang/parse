@@ -20,6 +20,8 @@ namespace parse {
             ctx->logError("Expected '('");
             n->m_isError = true;
         }
+        
+        ctx->consume(n);
 
         n->value = ExpressionNode::TryParse(ctx);
         if (!n->value) {

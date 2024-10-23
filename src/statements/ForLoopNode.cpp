@@ -75,6 +75,8 @@ namespace parse {
             return n;
         }
 
+        ctx->consume(n);
+
         n->body = StatementNode::TryParse(ctx);
         if (!n->body) {
             ctx->logError("Expected loop body");

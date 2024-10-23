@@ -111,10 +111,7 @@ expression = awaitExpression;
 
 (* statements *)
 statementBlock = "{", [{ statement }], "}";
-declarationStatement = constDeclarationStatement | letDeclarationStatement;
-constDeclarationStatement = "const", (assignable | typedAssignable | destructureTarget), "=", expression;
-assignedLetDeclarationStatement = "let", (assignable | typedAssignable | destructureTarget), "=", expression;
-letDeclarationStatement = "let", (assignedLetDeclarationStatement | typedAssignable);
+declarationStatement = ("const" | "let"), (assignable, typedAssignable, destructureTarget), ["=", expression];
 expressionStatement = expressionSequence;
 ifStatement = "if", "(", expression, ")", statement, ["else", statement];
 forLoop = "for", "(", {declarationStatement}, ";", {expression}, ";", {expression}, ")", statement;
@@ -133,8 +130,9 @@ exportable = classDeclaration
            | functionDefinition
            | typeDeclaration
            | typeDefinition
-           | constDeclarationStatement
-           | assignedLetDeclarationStatement
+           | enumDeclaration
+           | enumDefinition
+           | declarationStatement
            | identifier;
 exportStatement = "export", exportable;
 statement = ";"
@@ -144,14 +142,14 @@ statement = ";"
           | "throw", [expression], ";"
           | "delete", expression, ";"
           | declarationStatement, ";"
+          | statementBlock
           | expressionStatement, ";"
           | ifStatement
           | forLoop
           | switchStatement
           | whileLoop
           | doWhileLoop
-          | tryCatchStatement
-          | statementBlock;
+          | tryCatchStatement;
 
 (* comments *)
 lineComment = "//", [notNewline], ("\n" | endOfInput);
