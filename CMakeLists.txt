@@ -43,15 +43,15 @@ add_sources("src/declarations" "declarations")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+if (NOT TARGET tokenize)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/tokenize)
+endif()
+
 include_directories(
     ${TSN_PARSE_INCLUDE_DIR}
     ${TSN_TOKENIZE_INCLUDE_DIR}
     ${TSN_UTILS_INCLUDE_DIR}
 )
-
-if (NOT TARGET tokenize)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/tokenize)
-endif()
 
 add_library(parse ${all_sources})
 target_link_libraries(parse tokenize)

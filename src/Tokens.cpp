@@ -87,13 +87,13 @@ namespace parse {
                 input = findEndOfTemplateLiteralEmbeddedValue(input + 1);
             } else if (*input == '`') {
                 input++;
-                outMatch->length = input - begin;
+                outMatch->length = u32(input - begin);
                 outMatch->contentEndOffset = outMatch->length - 1;
                 return MatchResult::Matched;
             }
         }
 
-        outMatch->length = input - begin;
+        outMatch->length = u32(input - begin);
         outMatch->contentEndOffset = outMatch->length;
         return MatchResult::EndNotMatched;
     }
