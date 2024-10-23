@@ -428,7 +428,7 @@ namespace parse {
         FunctionTypeNode* n = FunctionTypeNode::Create(m_ctx);
 
         n->returnType = copyChildNode(node->returnType);
-        copyChildNodeArray(node->parameters, n->parameters);
+        n->parameters = copyChildNode(node->parameters);
 
         useResult(n, node);
     }

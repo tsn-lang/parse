@@ -1,11 +1,11 @@
 #include <parse/types/FunctionTypeNode.h>
 #include <parse/misc/TypedAssignableNode.h>
+#include <parse/misc/ParameterListNode.h>
 #include <parse/types/TypeSpecifierNode.h>
 #include <parse/Context.h>
 
 namespace parse {
-    FunctionTypeNode::FunctionTypeNode(Context* ctx) : Node(ctx, NodeType::FunctionTypeNode), returnType(nullptr) {}
-    FunctionTypeNode::~FunctionTypeNode() {}
+    FunctionTypeNode::FunctionTypeNode(Context* ctx) : Node(ctx, NodeType::FunctionTypeNode), parameters(nullptr), returnType(nullptr) {}
     void FunctionTypeNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     FunctionTypeNode* FunctionTypeNode::Create(Context* ctx) { return new (ctx->allocNode()) FunctionTypeNode(ctx); }
 
@@ -14,10 +14,9 @@ namespace parse {
 
         ctx->begin();
         FunctionTypeNode* n = Create(ctx);
-        ctx->consume(n);
 
-        TypedAssignableNode* param = TypedAssignableNode::TryParse(ctx);
-        if (!param && !ctx->match(TokenType::Symbol, TokenSubType::Symbol_CloseParen)) {
+        n->parameters = ParameterListNode::TryParse(ctx);
+        if (!n->parameters) {
             ctx->rollback();
             n->destroy();
             return nullptr;
@@ -25,36 +24,8 @@ namespace parse {
 
         ctx->commit();
 
-        while (param) {
-            if (param->isError()) {
-                param->destroy();
-                ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseParen);
-                break;
-            }
-
-            n->parameters.push(param);
-            n->extendLocation(param);
-
-            if (ctx->match(TokenType::Symbol, TokenSubType::Symbol_Comma)) {
-                ctx->consume(n);
-                param = TypedAssignableNode::TryParse(ctx);
-
-                if (!param) {
-                    ctx->logError("Expected typed parameter after ','");
-                    n->m_isError = true;
-                    ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseParen);
-                    break;
-                }
-            } else param = nullptr;
-        }
-
-        if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_CloseParen)) {
-            ctx->logError("Expected ')'");
-            n->m_isError = true;
-            return n;
-        }
-
-        ctx->consume(n);
+        n->m_isError = n->parameters->isError();
+        n->extendLocation(n->parameters);
 
         if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_Arrow)) {
             ctx->logError("Expected '=>'");
@@ -65,7 +36,8 @@ namespace parse {
         ctx->consume(n);
 
         n->returnType = TypeSpecifierNode::TryParse(ctx);
-        if (!n->returnType) {
+        if (n->returnType) n->extendLocation(n->returnType);
+        else {
             ctx->logError("Expected return type specifier");
             n->m_isError = true;
         }

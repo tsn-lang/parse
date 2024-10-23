@@ -15,6 +15,7 @@ namespace parse {
             virtual void acceptVisitor(INodeVisitor* visitor);
             static TypeSpecifierNode* Create(Context* ctx);
             static TypeSpecifierNode* TryParse(Context* ctx);
+            static TypeSpecifierNode* TryParseModifiers(Context* ctx, TypeSpecifierNode* base);
 
             Node* type;
             Modifier mod;

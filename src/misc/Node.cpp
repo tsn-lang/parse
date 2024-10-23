@@ -80,9 +80,9 @@ namespace parse {
             m_location.startBufferPosition = curTok->location.startBufferPosition;
             m_location.startLine = curTok->location.startLine;
             m_location.startColumn = curTok->location.startColumn;
-            m_location.endBufferPosition = m_location.startBufferPosition;
-            m_location.endLine = m_location.endLine;
-            m_location.endColumn = m_location.endColumn;
+            m_location.endBufferPosition = curTok->location.endBufferPosition;
+            m_location.endLine = curTok->location.endLine;
+            m_location.endColumn = curTok->location.endColumn;
         }
     }
 

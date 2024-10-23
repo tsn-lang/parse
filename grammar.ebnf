@@ -53,7 +53,7 @@ functionArguments = "(", [expressionSequence], ")";
 typeModifier = ("[", "]") | "*";
 identifierTypeSpecifier = identifier, ["<", typeArgumentList, ">"];
 objectTypeSpecifier = "{", [{ typedAssignable, ";" }], "}";
-arrayTypeSpecifier = "[", [{ typedAssignable, ";" }], "]";
+arrayTypeSpecifier = "[", typedAssignable, [{ ",", typedAssignable }], "]";
 functionTypeSpecifier = "(", [typedParameterList], ")", "=>", typeSpecifier;
 parenthesizedTypeSpecifier = "(", typeSpecifier, ")";
 typeSpecifier = (identifierTypeSpecifier | objectTypeSpecifier | arrayTypeSpecifier | functionTypeSpecifier | parenthesizedTypeSpecifier), [{typeModifier}];

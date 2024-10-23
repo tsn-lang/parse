@@ -1,6 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <parse/Context.h>
 #include <parse/Tokens.h>
+#include <parse/types/TypeSpecifierNode.h>
 #include <parse/types.h>
 #include <tokenize/TokenizedSource.h>
 #include <tokenize/Resource.h>
@@ -128,6 +129,12 @@ CATCH_REGISTER_ENUM(OperatorType,
     OperatorType::PostIncrement,
     OperatorType::PreDecrement,
     OperatorType::PostDecrement
+);
+
+CATCH_REGISTER_ENUM(TypeSpecifierNode::Modifier,
+    TypeSpecifierNode::Modifier::None,
+    TypeSpecifierNode::Modifier::Array,
+    TypeSpecifierNode::Modifier::Pointer
 );
 
 namespace Catch {

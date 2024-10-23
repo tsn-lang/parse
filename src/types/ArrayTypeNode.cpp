@@ -27,8 +27,9 @@ namespace parse {
 
         while (elem) {
             if (elem->isError()) {
+                n->m_isError = true;
                 elem->destroy();
-                ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseBracket);
+                if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseBracket)) return n;
                 break;
             }
 
@@ -40,15 +41,15 @@ namespace parse {
                 elem = TypedAssignableNode::TryParse(ctx);
 
                 if (!elem) {
-                    ctx->logError("Expected typed assignable after ','");
+                    ctx->logError("Expected typed assignable");
                     n->m_isError = true;
-                    ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseBracket);
+                    if (!ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseBracket)) return n;
                     break;
                 }
             } else elem = nullptr;
         }
 
-        if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_CloseBrace)) {
+        if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_CloseBracket)) {
             ctx->logError("Expected ']'");
             n->m_isError = true;
         } else {

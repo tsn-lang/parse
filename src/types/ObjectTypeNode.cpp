@@ -17,36 +17,34 @@ namespace parse {
         ObjectTypeNode* n = Create(ctx);
         ctx->consume(n);
 
-        TypedAssignableNode* elem = TypedAssignableNode::TryParse(ctx);
-        if (!elem) {
-            ctx->rollback();
-            n->destroy();
-            return nullptr;
-        }
-        
-        ctx->commit();
+        while (true) {
+            TypedAssignableNode* elem = TypedAssignableNode::TryParse(ctx);
+            if (!elem) break;
 
-        while (elem) {
             if (elem->isError()) {
+                n->m_isError = true;
                 elem->destroy();
-                ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseBrace);
-                break;
+                if (!ctx->skipToAnyMatched({
+                    Match(TokenType::EndOfStatement),
+                    Match(TokenType::Symbol, TokenSubType::Symbol_CloseBrace)
+                })) return n;
             }
-
+            
             n->properties.push(elem);
             n->extendLocation(elem);
 
-            if (ctx->match(TokenType::Symbol, TokenSubType::Symbol_Comma)) {
-                ctx->consume(n);
-                elem = TypedAssignableNode::TryParse(ctx);
+            if (ctx->match(TokenType::EndOfStatement)) ctx->consume(n);
+            else {
+                n->m_isError = true;
+                ctx->logError("Expected ';'");
+                if (!ctx->skipToAnyMatched({
+                    Match(TokenType::EndOfStatement),
+                    Match(TokenType::Symbol, TokenSubType::Symbol_CloseBrace)
+                })) return n;
 
-                if (!elem) {
-                    ctx->logError("Expected typed assignable after ','");
-                    n->m_isError = true;
-                    ctx->skipTo(TokenType::Symbol, TokenSubType::Symbol_CloseBrace);
-                    break;
-                }
-            } else elem = nullptr;
+                if (ctx->match(TokenType::EndOfStatement)) ctx->consume(n);
+                else break;
+            }
         }
 
         if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_CloseBrace)) {

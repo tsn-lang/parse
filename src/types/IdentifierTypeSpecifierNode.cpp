@@ -29,8 +29,9 @@ namespace parse {
 
         TypeSpecifierNode* arg = TypeSpecifierNode::TryParse(ctx);
         if (!arg) {
-            n->m_isError = true;
-            ctx->logError("Expected type specifier");
+            ctx->rollback();
+            n->destroy();
+            return nullptr;
         }
 
         while (arg) {
