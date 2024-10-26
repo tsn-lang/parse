@@ -1,11 +1,12 @@
 #include <parse/types/IdentifierTypeSpecifierNode.h>
 #include <parse/types/TypeSpecifierNode.h>
+#include <parse/misc/IdentifierNode.h>
 #include <parse/Context.h>
 #include <tokenize/Token.h>
 #include <utils/Array.hpp>
 
 namespace parse {
-    IdentifierTypeSpecifierNode::IdentifierTypeSpecifierNode(Context* ctx) : Node(ctx, NodeType::IdentifierTypeSpecifierNode) {}
+    IdentifierTypeSpecifierNode::IdentifierTypeSpecifierNode(Context* ctx) : Node(ctx, NodeType::IdentifierTypeSpecifierNode), name(nullptr) {}
     IdentifierTypeSpecifierNode::~IdentifierTypeSpecifierNode() {}
     void IdentifierTypeSpecifierNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     IdentifierTypeSpecifierNode* IdentifierTypeSpecifierNode::Create(Context* ctx) { return new (ctx->allocNode()) IdentifierTypeSpecifierNode(ctx); }
@@ -17,8 +18,8 @@ namespace parse {
 
         IdentifierTypeSpecifierNode* n = Create(ctx);
 
-        n->name = ctx->get()->toString();
-        ctx->consume(n);
+        n->name = IdentifierNode::TryParse(ctx);
+        n->extendLocation(n->name);
 
         if (!ctx->match(TokenType::Symbol, TokenSubType::Operator_LessThan)) {
             ctx->commit();

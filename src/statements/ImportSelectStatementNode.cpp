@@ -1,10 +1,11 @@
 #include <parse/statements/ImportSelectStatementNode.h>
 #include <parse/misc/IdentifierNode.h>
+#include <parse/literals/StringLiteralNode.h>
 #include <parse/Context.h>
 #include <tokenize/Token.h>
 
 namespace parse {
-    ImportSelectStatementNode::ImportSelectStatementNode(Context* ctx) : Node(ctx, NodeType::ImportSelectStatementNode) {}
+    ImportSelectStatementNode::ImportSelectStatementNode(Context* ctx) : Node(ctx, NodeType::ImportSelectStatementNode), moduleId(nullptr) {}
     ImportSelectStatementNode::~ImportSelectStatementNode() {}
     void ImportSelectStatementNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     ImportSelectStatementNode* ImportSelectStatementNode::Create(Context* ctx) { return new (ctx->allocNode()) ImportSelectStatementNode(ctx); }
@@ -86,7 +87,8 @@ namespace parse {
 
         ctx->consume(n);
 
-        if (!ctx->match(TokenType::Literal, TokenSubType::Literal_String)) {
+        n->moduleId = StringLiteralNode::TryParse(ctx);
+        if (!n->moduleId) {
             ctx->logError("Expected string");
             n->m_isError = true;
             
@@ -97,10 +99,7 @@ namespace parse {
             return n;
         }
 
-        String id = ctx->get()->toString();
-        n->moduleId = String::View(id.c_str() + 1, id.size() - 2);
-        ctx->consume(n);
-
+        n->extendLocation(n->moduleId);
         return n;
     }
 };

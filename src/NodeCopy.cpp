@@ -415,7 +415,7 @@ namespace parse {
         FunctionNode* n = FunctionNode::Create(m_ctx);
 
         n->isAsync = node->isAsync;
-        n->name = node->name;
+        n->name = copyChildNode(node->name);
         n->returnType = copyChildNode(node->returnType);
         n->body = copyChildNode(node->body);
         n->typeParameters = copyChildNode(node->typeParameters);
@@ -442,7 +442,7 @@ namespace parse {
     void NodeCopy::visit(IdentifierTypeSpecifierNode* node) {
         IdentifierTypeSpecifierNode* n = IdentifierTypeSpecifierNode::Create(m_ctx);
 
-        n->name = node->name;
+        n->name = copyChildNode(node->name);
         copyChildNodeArray(node->parameters, n->parameters);
 
         useResult(n, node);
@@ -470,8 +470,8 @@ namespace parse {
     void NodeCopy::visit(ImportAllStatementNode* node) {
         ImportAllStatementNode* n = ImportAllStatementNode::Create(m_ctx);
 
-        n->alias = node->alias;
-        n->moduleId = node->moduleId;
+        n->alias = copyChildNode(node->alias);
+        n->moduleId = copyChildNode(node->moduleId);
 
         useResult(n, node);
     }
@@ -479,7 +479,7 @@ namespace parse {
     void NodeCopy::visit(ImportSelectStatementNode* node) {
         ImportSelectStatementNode* n = ImportSelectStatementNode::Create(m_ctx);
 
-        n->moduleId = node->moduleId;
+        n->moduleId = copyChildNode(node->moduleId);
         copyChildNodeArray(node->importList, n->importList);
 
         useResult(n, node);
@@ -657,7 +657,7 @@ namespace parse {
     void NodeCopy::visit(TypedAssignableNode* node) {
         TypedAssignableNode* n = TypedAssignableNode::Create(m_ctx);
 
-        n->name = node->name;
+        n->name = copyChildNode(node->name);
         n->type = copyChildNode(node->type);
 
         useResult(n, node);

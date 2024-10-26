@@ -1,6 +1,5 @@
 #pragma once
 #include <parse/misc/Node.h>
-#include <utils/String.h>
 #include <utils/Array.h>
 
 namespace parse {
@@ -13,7 +12,7 @@ namespace parse {
             static IdentifierTypeSpecifierNode* Create(Context* ctx);
             static IdentifierTypeSpecifierNode* TryParse(Context* ctx);
 
-            String name;
+            IdentifierNode* name;
             Array<TypeSpecifierNode*> parameters;
 
         private:

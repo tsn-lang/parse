@@ -23,6 +23,7 @@
 #include <parse/proxies/StatementNode.h>
 #include <parse/proxies/ExpressionNode.h>
 #include <parse/literals/NumberLiteralNode.h>
+#include <parse/literals/StringLiteralNode.h>
 #include <utils/Array.hpp>
 
 using namespace tokenize;
@@ -35,11 +36,13 @@ TEST_CASE("Test CatchStatementNode") {
     REQUIRE(n->isError() == false);
     REQUIRE(test.ctx->getState()->messages.size() == 0);
     REQUIRE(n->exception != nullptr);
-    REQUIRE(n->exception->name == "exc");
+    REQUIRE(n->exception->name != nullptr);
+    REQUIRE(n->exception->name->text == "exc");
     REQUIRE(n->exception->type != nullptr);
     REQUIRE(n->exception->type->type != nullptr);
     REQUIRE(n->exception->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-    REQUIRE(((IdentifierTypeSpecifierNode*)n->exception->type->type)->name == "i32");
+    REQUIRE(((IdentifierTypeSpecifierNode*)n->exception->type->type)->name != nullptr);
+    REQUIRE(((IdentifierTypeSpecifierNode*)n->exception->type->type)->name->text == "i32");
     REQUIRE(n->body != nullptr);
     REQUIRE(n->body->stmt != nullptr);
     REQUIRE(n->body->stmt->getType() == NodeType::StatementBlockNode);
@@ -73,8 +76,10 @@ TEST_CASE("Test DeclarationStatementNode") {
         REQUIRE(n->typedAssignable->type != nullptr);
         REQUIRE(n->typedAssignable->type->type != nullptr);
         REQUIRE(n->typedAssignable->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name == "i32");
-        REQUIRE(n->typedAssignable->name == "var");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name->text == "i32");
+        REQUIRE(n->typedAssignable->name != nullptr);
+        REQUIRE(n->typedAssignable->name->text == "var");
         REQUIRE(n->isConst == true);
         REQUIRE(n->isArrayDestructure == false);
         REQUIRE(n->isObjectDestructure == false);
@@ -154,8 +159,10 @@ TEST_CASE("Test DeclarationStatementNode") {
         REQUIRE(n->typedAssignable->type != nullptr);
         REQUIRE(n->typedAssignable->type->type != nullptr);
         REQUIRE(n->typedAssignable->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name == "i32");
-        REQUIRE(n->typedAssignable->name == "var");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name->text == "i32");
+        REQUIRE(n->typedAssignable->name != nullptr);
+        REQUIRE(n->typedAssignable->name->text == "var");
         REQUIRE(n->isConst == true);
         REQUIRE(n->isArrayDestructure == false);
         REQUIRE(n->isObjectDestructure == false);
@@ -241,8 +248,10 @@ TEST_CASE("Test DeclarationStatementNode") {
         REQUIRE(n->typedAssignable->type != nullptr);
         REQUIRE(n->typedAssignable->type->type != nullptr);
         REQUIRE(n->typedAssignable->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name == "i32");
-        REQUIRE(n->typedAssignable->name == "var");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name->text == "i32");
+        REQUIRE(n->typedAssignable->name != nullptr);
+        REQUIRE(n->typedAssignable->name->text == "var");
         REQUIRE(n->isConst == false);
         REQUIRE(n->isArrayDestructure == false);
         REQUIRE(n->isObjectDestructure == false);
@@ -322,8 +331,10 @@ TEST_CASE("Test DeclarationStatementNode") {
         REQUIRE(n->typedAssignable->type != nullptr);
         REQUIRE(n->typedAssignable->type->type != nullptr);
         REQUIRE(n->typedAssignable->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name == "i32");
-        REQUIRE(n->typedAssignable->name == "var");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->typedAssignable->type->type)->name->text == "i32");
+        REQUIRE(n->typedAssignable->name != nullptr);
+        REQUIRE(n->typedAssignable->name->text == "var");
         REQUIRE(n->isConst == false);
         REQUIRE(n->isArrayDestructure == false);
         REQUIRE(n->isObjectDestructure == false);
@@ -545,9 +556,9 @@ TEST_CASE("Test ImportAllStatementNode") {
         REQUIRE(n != nullptr);
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
-
-        REQUIRE(n->moduleId == "module");
-        REQUIRE(n->alias.size() == 0);
+        REQUIRE(n->moduleId != nullptr);
+        REQUIRE(n->moduleId->value == "module");
+        REQUIRE(n->alias == nullptr);
     }
     
     SECTION("aliased") {
@@ -557,8 +568,10 @@ TEST_CASE("Test ImportAllStatementNode") {
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
 
-        REQUIRE(n->moduleId == "module");
-        REQUIRE(n->alias == "Mod");
+        REQUIRE(n->moduleId != nullptr);
+        REQUIRE(n->moduleId->value == "module");
+        REQUIRE(n->alias != nullptr);
+        REQUIRE(n->alias->text == "Mod");
     }
 }
 
@@ -570,7 +583,8 @@ TEST_CASE("Test ImportSelectStatementNode") {
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
 
-        REQUIRE(n->moduleId == "module");
+        REQUIRE(n->moduleId != nullptr);
+        REQUIRE(n->moduleId->value == "module");
         REQUIRE(n->importList.size() == 1);
         REQUIRE(n->importList[0] != nullptr);
         REQUIRE(n->importList[0]->text == "a");
@@ -583,7 +597,8 @@ TEST_CASE("Test ImportSelectStatementNode") {
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
 
-        REQUIRE(n->moduleId == "module");
+        REQUIRE(n->moduleId != nullptr);
+        REQUIRE(n->moduleId->value == "module");
         REQUIRE(n->importList.size() == 3);
         REQUIRE(n->importList[0] != nullptr);
         REQUIRE(n->importList[0]->text == "a");
@@ -822,21 +837,24 @@ TEST_CASE("Test TryCatchStatementNode") {
         REQUIRE(n->catchBlocks.size() == 3);
         REQUIRE(n->catchBlocks[0] != nullptr);
         REQUIRE(n->catchBlocks[0]->exception != nullptr);
-        REQUIRE(n->catchBlocks[0]->exception->name == "exc");
+        REQUIRE(n->catchBlocks[0]->exception->name != nullptr);
+        REQUIRE(n->catchBlocks[0]->exception->name->text == "exc");
         REQUIRE(n->catchBlocks[0]->exception->type != nullptr);
         REQUIRE(n->catchBlocks[0]->exception->type->type != nullptr);
         REQUIRE(n->catchBlocks[0]->exception->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
 
         REQUIRE(n->catchBlocks[1] != nullptr);
         REQUIRE(n->catchBlocks[1]->exception != nullptr);
-        REQUIRE(n->catchBlocks[1]->exception->name == "exc");
+        REQUIRE(n->catchBlocks[1]->exception->name != nullptr);
+        REQUIRE(n->catchBlocks[1]->exception->name->text == "exc");
         REQUIRE(n->catchBlocks[1]->exception->type != nullptr);
         REQUIRE(n->catchBlocks[1]->exception->type->type != nullptr);
         REQUIRE(n->catchBlocks[1]->exception->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
 
         REQUIRE(n->catchBlocks[2] != nullptr);
         REQUIRE(n->catchBlocks[2]->exception != nullptr);
-        REQUIRE(n->catchBlocks[2]->exception->name == "exc");
+        REQUIRE(n->catchBlocks[2]->exception->name != nullptr);
+        REQUIRE(n->catchBlocks[2]->exception->name->text == "exc");
         REQUIRE(n->catchBlocks[2]->exception->type != nullptr);
         REQUIRE(n->catchBlocks[2]->exception->type->type != nullptr);
         REQUIRE(n->catchBlocks[2]->exception->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);

@@ -4,6 +4,7 @@
 #include <parse/types/IdentifierTypeSpecifierNode.h>
 #include <parse/types/ObjectTypeNode.h>
 #include <parse/types/TypeSpecifierNode.h>
+#include <parse/misc/IdentifierNode.h>
 #include <parse/misc/TypedAssignableNode.h>
 #include <parse/misc/ParameterListNode.h>
 #include <utils/Array.hpp>
@@ -27,7 +28,8 @@ TEST_CASE("Test ArrayTypeNode", "[parse]") {
 
         REQUIRE(n->elements.size() == 1);
         REQUIRE(n->elements[0] != nullptr);
-        REQUIRE(n->elements[0]->name == "a");
+        REQUIRE(n->elements[0]->name != nullptr);
+        REQUIRE(n->elements[0]->name->text == "a");
         REQUIRE(n->elements[0]->type != nullptr);
     }
     
@@ -40,13 +42,16 @@ TEST_CASE("Test ArrayTypeNode", "[parse]") {
 
         REQUIRE(n->elements.size() == 3);
         REQUIRE(n->elements[0] != nullptr);
-        REQUIRE(n->elements[0]->name == "a");
+        REQUIRE(n->elements[0]->name != nullptr);
+        REQUIRE(n->elements[0]->name->text == "a");
         REQUIRE(n->elements[0]->type != nullptr);
         REQUIRE(n->elements[1] != nullptr);
-        REQUIRE(n->elements[1]->name == "b");
+        REQUIRE(n->elements[1]->name != nullptr);
+        REQUIRE(n->elements[1]->name->text == "b");
         REQUIRE(n->elements[1]->type != nullptr);
         REQUIRE(n->elements[2] != nullptr);
-        REQUIRE(n->elements[2]->name == "c");
+        REQUIRE(n->elements[2]->name != nullptr);
+        REQUIRE(n->elements[2]->name->text == "c");
         REQUIRE(n->elements[2]->type != nullptr);
     }
 }
@@ -83,7 +88,8 @@ TEST_CASE("Test IdentifierTypeSpecifierNode", "[parse]") {
         REQUIRE(n != nullptr);
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
-        REQUIRE(n->name == "Test");
+        REQUIRE(n->name != nullptr);
+        REQUIRE(n->name->text == "Test");
         REQUIRE(n->parameters.size() == 0);
     }
     
@@ -93,12 +99,14 @@ TEST_CASE("Test IdentifierTypeSpecifierNode", "[parse]") {
         REQUIRE(n != nullptr);
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
-        REQUIRE(n->name == "Test");
+        REQUIRE(n->name != nullptr);
+        REQUIRE(n->name->text == "Test");
         REQUIRE(n->parameters.size() == 1);
         REQUIRE(n->parameters[0] != nullptr);
         REQUIRE(n->parameters[0]->type != nullptr);
         REQUIRE(n->parameters[0]->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[0]->type)->name == "P1");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[0]->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[0]->type)->name->text == "P1");
     }
     
     SECTION("multiple parameters") {
@@ -107,20 +115,24 @@ TEST_CASE("Test IdentifierTypeSpecifierNode", "[parse]") {
         REQUIRE(n != nullptr);
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
-        REQUIRE(n->name == "Test");
+        REQUIRE(n->name != nullptr);
+        REQUIRE(n->name->text == "Test");
         REQUIRE(n->parameters.size() == 3);
         REQUIRE(n->parameters[0] != nullptr);
         REQUIRE(n->parameters[0]->type != nullptr);
         REQUIRE(n->parameters[0]->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[0]->type)->name == "P1");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[0]->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[0]->type)->name->text == "P1");
         REQUIRE(n->parameters[1] != nullptr);
         REQUIRE(n->parameters[1]->type != nullptr);
         REQUIRE(n->parameters[1]->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[1]->type)->name == "P2");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[1]->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[1]->type)->name->text == "P2");
         REQUIRE(n->parameters[2] != nullptr);
         REQUIRE(n->parameters[2]->type != nullptr);
         REQUIRE(n->parameters[2]->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[2]->type)->name == "P3");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[2]->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[2]->type)->name->text == "P3");
     }
 }
 
@@ -144,7 +156,8 @@ TEST_CASE("Test ObjectTypeNode", "[parse]") {
 
         REQUIRE(n->properties.size() == 1);
         REQUIRE(n->properties[0] != nullptr);
-        REQUIRE(n->properties[0]->name == "a");
+        REQUIRE(n->properties[0]->name != nullptr);
+        REQUIRE(n->properties[0]->name->text == "a");
         REQUIRE(n->properties[0]->type != nullptr);
     }
     
@@ -157,13 +170,16 @@ TEST_CASE("Test ObjectTypeNode", "[parse]") {
 
         REQUIRE(n->properties.size() == 3);
         REQUIRE(n->properties[0] != nullptr);
-        REQUIRE(n->properties[0]->name == "a");
+        REQUIRE(n->properties[0]->name != nullptr);
+        REQUIRE(n->properties[0]->name->text == "a");
         REQUIRE(n->properties[0]->type != nullptr);
         REQUIRE(n->properties[1] != nullptr);
-        REQUIRE(n->properties[1]->name == "b");
+        REQUIRE(n->properties[1]->name != nullptr);
+        REQUIRE(n->properties[1]->name->text == "b");
         REQUIRE(n->properties[1]->type != nullptr);
         REQUIRE(n->properties[2] != nullptr);
-        REQUIRE(n->properties[2]->name == "c");
+        REQUIRE(n->properties[2]->name != nullptr);
+        REQUIRE(n->properties[2]->name->text == "c");
         REQUIRE(n->properties[2]->type != nullptr);
     }
 }

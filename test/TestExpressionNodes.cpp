@@ -64,7 +64,8 @@ TEST_CASE("Test ArrowFunctionExpressionNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "i32");
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }
 
@@ -1074,7 +1075,8 @@ TEST_CASE("Test CastExpressionNode", "[parse]") {
     REQUIRE(c->asType != nullptr);
     REQUIRE(c->asType->type != nullptr);
     REQUIRE(c->asType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-    REQUIRE(((IdentifierTypeSpecifierNode*)c->asType->type)->name == "i32");
+    REQUIRE(((IdentifierTypeSpecifierNode*)c->asType->type)->name != nullptr);
+    REQUIRE(((IdentifierTypeSpecifierNode*)c->asType->type)->name->text == "i32");
     REQUIRE(test.ctx->getState()->messages.size() == 0);
 }
 
@@ -1227,7 +1229,8 @@ TEST_CASE("Test FunctionExpressionNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "i32");
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }
 
@@ -1488,7 +1491,8 @@ TEST_CASE("Test NewExpressionNode", "[parse]") {
         REQUIRE(e->type != nullptr);
         REQUIRE(e->type->type != nullptr);
         REQUIRE(e->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)e->type->type)->name == "Type");
+        REQUIRE(((IdentifierTypeSpecifierNode*)e->type->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)e->type->type)->name->text == "Type");
 
         REQUIRE(test.ctx->getState()->messages.size() == 0);
     }

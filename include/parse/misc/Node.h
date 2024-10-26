@@ -80,6 +80,8 @@ namespace parse {
 
     class INodeVisitor {
         public:
+            virtual ~INodeVisitor();
+            
             virtual void visit(ArrayLiteralNode* node);
             virtual void visit(ArrayTypeNode* node);
             virtual void visit(ArrowFunctionExpressionNode* node);

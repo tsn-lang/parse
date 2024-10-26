@@ -1,6 +1,5 @@
 #pragma once
 #include <parse/misc/Node.h>
-#include <utils/String.h>
 #include <utils/Array.h>
 
 namespace parse {
@@ -14,7 +13,7 @@ namespace parse {
             static ImportSelectStatementNode* TryParse(Context* ctx);
 
             Array<IdentifierNode*> importList;
-            String moduleId;
+            StringLiteralNode* moduleId;
 
         private:
             ImportSelectStatementNode(Context* ctx);

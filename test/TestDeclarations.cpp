@@ -5,6 +5,7 @@
 #include <parse/declarations/FunctionNode.h>
 #include <parse/declarations/TypeNode.h>
 #include <parse/literals/NumberLiteralNode.h>
+#include <parse/misc/IdentifierNode.h>
 #include <parse/misc/ParameterListNode.h>
 #include <parse/misc/TypeParameterListNode.h>
 #include <parse/types/TypeSpecifierNode.h>
@@ -94,7 +95,8 @@ TEST_CASE("Test FunctionNode", "[parse]") {
         FunctionNode* n = FunctionNode::TryParse(test.ctx);
         REQUIRE(n != nullptr);
         REQUIRE(n->isAsync == false);
-        REQUIRE(n->name == "test");
+        REQUIRE(n->name != nullptr);
+        REQUIRE(n->name->text == "test");
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
     }
@@ -174,7 +176,8 @@ TEST_CASE("Test FunctionNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "void");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "void");
         REQUIRE(n->isError() == false);
         REQUIRE(test0.ctx->getState()->messages.size() == 0);
 
@@ -184,7 +187,8 @@ TEST_CASE("Test FunctionNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "i32");
         REQUIRE(n->isError() == false);
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }
@@ -228,7 +232,8 @@ TEST_CASE("Test TypeNode", "[parse]") {
         REQUIRE(n->type != nullptr);
         REQUIRE(n->type->type != nullptr);
         REQUIRE(n->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->type->type)->name == "void");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->type->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->type->type)->name->text == "void");
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
     }

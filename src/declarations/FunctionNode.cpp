@@ -1,4 +1,5 @@
 #include <parse/declarations/FunctionNode.h>
+#include <parse/misc/IdentifierNode.h>
 #include <parse/misc/TypedAssignableNode.h>
 #include <parse/misc/TypeParameterListNode.h>
 #include <parse/misc/ParameterListNode.h>
@@ -8,10 +9,9 @@
 #include <tokenize/Token.h>
 
 namespace parse {
-    FunctionNode::FunctionNode(Context* ctx) : Node(ctx, NodeType::FunctionNode), isAsync(false), body(nullptr),
+    FunctionNode::FunctionNode(Context* ctx) : Node(ctx, NodeType::FunctionNode), isAsync(false), name(nullptr), body(nullptr),
     parameters(nullptr), typeParameters(nullptr)
     {}
-    FunctionNode::~FunctionNode() {}
     void FunctionNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     FunctionNode* FunctionNode::Create(Context* ctx) { return new (ctx->allocNode()) FunctionNode(ctx); }
 
@@ -37,8 +37,7 @@ namespace parse {
             return n;
         }
 
-        n->name = ctx->get()->toString();
-        ctx->consume(n);
+        n->name = IdentifierNode::TryParse(ctx);
 
         n->typeParameters = TypeParameterListNode::TryParse(ctx);
         if (n->typeParameters && n->typeParameters->isError()) {

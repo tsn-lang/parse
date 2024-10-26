@@ -7,6 +7,7 @@
 #include <parse/classes/ClassPropertyGetterNode.h>
 #include <parse/classes/ClassPropertyNode.h>
 #include <parse/classes/ClassPropertySetterNode.h>
+#include <parse/misc/IdentifierNode.h>
 #include <parse/misc/ParameterListNode.h>
 #include <parse/misc/TypeParameterListNode.h>
 #include <parse/misc/TypedAssignableNode.h>
@@ -283,7 +284,8 @@ TEST_CASE("Test ClassMethodNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "void");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "void");
         REQUIRE(n->isError() == false);
         REQUIRE(test0.ctx->getState()->messages.size() == 0);
 
@@ -293,7 +295,8 @@ TEST_CASE("Test ClassMethodNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "i32");
         REQUIRE(n->isError() == false);
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }
@@ -444,23 +447,29 @@ TEST_CASE("Test ClassOperatorMethodNode", "[parse]") {
         REQUIRE(n->isError() == false);
         REQUIRE(test2.ctx->getState()->messages.size() == 0);
 
-        REQUIRE(n->parameters[0]->name == "p1");
+        REQUIRE(n->parameters[0]->name != nullptr);
+        REQUIRE(n->parameters[0]->name->text == "p1");
         REQUIRE(n->parameters[0]->type != nullptr);
         REQUIRE(n->parameters[0]->type->type != nullptr);
         REQUIRE(n->parameters[0]->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE((((IdentifierTypeSpecifierNode*)n->parameters[0]->type->type)->name) == "i8");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[0]->type->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[0]->type->type)->name->text == "i8");
 
-        REQUIRE(n->parameters[1]->name == "p2");
+        REQUIRE(n->parameters[1]->name != nullptr);
+        REQUIRE(n->parameters[1]->name->text == "p2");
         REQUIRE(n->parameters[1]->type != nullptr);
         REQUIRE(n->parameters[1]->type->type != nullptr);
         REQUIRE(n->parameters[1]->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE((((IdentifierTypeSpecifierNode*)n->parameters[1]->type->type)->name) == "i16");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[1]->type->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[1]->type->type)->name->text == "i16");
 
-        REQUIRE(n->parameters[2]->name == "p3");
+        REQUIRE(n->parameters[2]->name != nullptr);
+        REQUIRE(n->parameters[2]->name->text == "p3");
         REQUIRE(n->parameters[2]->type != nullptr);
         REQUIRE(n->parameters[2]->type->type != nullptr);
         REQUIRE(n->parameters[2]->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE((((IdentifierTypeSpecifierNode*)n->parameters[2]->type->type)->name) == "i32");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[2]->type->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->parameters[2]->type->type)->name->text == "i32");
     }
     
     SECTION("type parameters") {
@@ -509,7 +518,8 @@ TEST_CASE("Test ClassOperatorMethodNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "void");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "void");
         REQUIRE(n->isError() == false);
         REQUIRE(test0.ctx->getState()->messages.size() == 0);
 
@@ -519,7 +529,8 @@ TEST_CASE("Test ClassOperatorMethodNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "i32");
         REQUIRE(n->isError() == false);
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }
@@ -635,7 +646,8 @@ TEST_CASE("Test ClassPropertyGetterNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "void");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "void");
         REQUIRE(n->isError() == false);
         REQUIRE(test0.ctx->getState()->messages.size() == 0);
 
@@ -645,7 +657,8 @@ TEST_CASE("Test ClassPropertyGetterNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "i32");
         REQUIRE(n->isError() == false);
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }
@@ -698,7 +711,8 @@ TEST_CASE("Test ClassPropertyNode", "[parse]") {
         REQUIRE(n->type != nullptr);
         REQUIRE(n->type->type != nullptr);
         REQUIRE(n->type->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->type->type)->name == "void");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->type->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->type->type)->name->text == "void");
         REQUIRE(n->isError() == false);
         REQUIRE(test.ctx->getState()->messages.size() == 0);
     }
@@ -842,7 +856,8 @@ TEST_CASE("Test ClassPropertySetterNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "void");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "void");
         REQUIRE(n->isError() == false);
         REQUIRE(test0.ctx->getState()->messages.size() == 0);
 
@@ -852,7 +867,8 @@ TEST_CASE("Test ClassPropertySetterNode", "[parse]") {
         REQUIRE(n->returnType != nullptr);
         REQUIRE(n->returnType->type != nullptr);
         REQUIRE(n->returnType->type->getType() == NodeType::IdentifierTypeSpecifierNode);
-        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name == "i32");
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name != nullptr);
+        REQUIRE(((IdentifierTypeSpecifierNode*)n->returnType->type)->name->text == "i32");
         REQUIRE(n->isError() == false);
         REQUIRE(test1.ctx->getState()->messages.size() == 0);
     }

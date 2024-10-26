@@ -1,11 +1,11 @@
 #include <parse/misc/TypedAssignableNode.h>
+#include <parse/misc/IdentifierNode.h>
 #include <parse/types/TypeSpecifierNode.h>
 #include <parse/Context.h>
 #include <tokenize/Token.h>
 
 namespace parse {
-    TypedAssignableNode::TypedAssignableNode(Context* ctx) : Node(ctx, NodeType::TypedAssignableNode), type(nullptr) {}
-    TypedAssignableNode::~TypedAssignableNode() {}
+    TypedAssignableNode::TypedAssignableNode(Context* ctx) : Node(ctx, NodeType::TypedAssignableNode), name(nullptr), type(nullptr) {}
     void TypedAssignableNode::acceptVisitor(INodeVisitor* visitor) { visitor->visit(this); }
     TypedAssignableNode* TypedAssignableNode::Create(Context* ctx) { return new (ctx->allocNode()) TypedAssignableNode(ctx); }
 
@@ -14,7 +14,7 @@ namespace parse {
 
         ctx->begin();
         TypedAssignableNode* n = Create(ctx);
-        n->name = ctx->get()->toString();
+        n->name = IdentifierNode::TryParse(ctx);
         ctx->consume(n);
 
         if (!ctx->match(TokenType::Symbol, TokenSubType::Symbol_Colon)) {
